@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://store.rjbworld.org
+
+# Sitemaps
+Sitemap: https://store.rjbworld.org/sitemap.xml
