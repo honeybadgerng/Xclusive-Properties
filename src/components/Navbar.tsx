@@ -130,7 +130,7 @@ const Navbar: React.FC = () => {
             {navLinks.map((link) => (
               <Link
                 key={link.name}
-                to={link.path}
+                href={link.path}
                 className="flex items-center py-2 px-3 rounded-md hover:bg-muted"
                 onClick={() => setIsOpen(false)}
               >
