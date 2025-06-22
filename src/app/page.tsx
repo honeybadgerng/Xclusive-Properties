@@ -6,6 +6,8 @@ import { useCart } from "../context/CartContext";
 import HeroSection from "../components/HeroSection"; // Import the HeroSection component
 import Footer from "../components/Footer";
 import PropertySearch from "../components/PropertySearch"; // Import the PropertySearch component
+import FeaturedProperties from "../components/FeaturedProperties"; // Import the FeaturedProperties component
+import FeatureSection from "@/components/FeatureSection";
 interface Product {
   _id: string;
   name: string;
@@ -44,6 +46,8 @@ export default function HomePage() {
       <div className="container mx-auto px-4 -mt-8 relative z-20">
         <PropertySearch onSearch={handleSearch} />
       </div>
+      <FeaturedProperties />
+      <FeatureSection />
 
       {/* Product Listings */}
       <div className="p-6">
