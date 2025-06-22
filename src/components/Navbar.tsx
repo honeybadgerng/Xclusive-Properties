@@ -54,9 +54,11 @@ const Navbar: React.FC = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center">
-            <span className="text-2xl font-bold font-poppins text-primary">
-              Xclusive<span className="text-secondary">Realtors</span>
-            </span>
+            <img
+              src="/images/Xclusive_properties.png"
+              alt="Xclusive Properties Logo"
+              className="h-40 w-auto max-w-[500px]"
+            />
           </Link>
 
           {/* Desktop Navigation */}

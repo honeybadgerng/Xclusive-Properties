@@ -17,8 +17,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "XStore",
-  description: "The Most Trusted Online Store in Nigeria",
+  title: "Xclusive Properties",
+  description: "The Most Trusted Online Real Estate Platform in Nigeria",
 };
 
 export default function RootLayout({
