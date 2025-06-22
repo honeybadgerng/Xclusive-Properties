@@ -16,9 +16,14 @@ const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
           <div>
-            <h3 className="text-xl font-bold mb-4 text-secondary">
-              Xclusive Realtors
-            </h3>
+            {/* Logo */}
+            <Link href="/" className="flex items-center">
+              <img
+                src="/images/Xclusive_properties.png"
+                alt="Xclusive Properties Logo"
+                className="h-40 w-auto max-w-[500px]"
+              />
+            </Link>
             <p className="mb-4 text-sm opacity-80">
               Providing premium real estate solutions across Nigeria. Your
               journey to finding the perfect property starts here.
@@ -158,9 +163,7 @@ const Footer: React.FC = () => {
               </li>
               <li className="flex items-center">
                 <Mail className="h-5 w-5 mr-2 text-secondary flex-shrink-0" />
-                <span className="text-sm opacity-80">
-                  info@xclusiverealtors.com
-                </span>
+                <span className="text-sm opacity-80">connect@rjbworld.org</span>
               </li>
             </ul>
           </div>
@@ -168,8 +171,7 @@ const Footer: React.FC = () => {
 
         <div className="border-t border-white/10 mt-8 pt-6 text-center text-sm opacity-60">
           <p>
-            &copy; {new Date().getFullYear()} Xclusive Realtors. All rights
-            reserved.
+            &copy; {new Date().getFullYear()} RJB World. All rights reserved.
           </p>
         </div>
       </div>
