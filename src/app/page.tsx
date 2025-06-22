@@ -8,6 +8,8 @@ import Footer from "../components/Footer";
 import PropertySearch from "../components/PropertySearch"; // Import the PropertySearch component
 import FeaturedProperties from "../components/FeaturedProperties"; // Import the FeaturedProperties component
 import FeatureSection from "@/components/FeatureSection";
+import TestimonialSection from "@/components/TestimonialSection";
+import CallToAction from "@/components/CallToAction";
 interface Product {
   _id: string;
   name: string;
@@ -48,21 +50,8 @@ export default function HomePage() {
       </div>
       <FeaturedProperties />
       <FeatureSection />
-
-      {/* Product Listings */}
-      <div className="p-6">
-        <h1 className="text-2xl font-bold mb-6">Product Listings</h1>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {products.map((product) => (
-            <ProductCard
-              key={product._id}
-              product={product}
-              onAddToCart={handleAddToCart}
-            />
-          ))}
-        </div>
-      </div>
+      <TestimonialSection />
+      <CallToAction />
       <Footer />
     </div>
   );
