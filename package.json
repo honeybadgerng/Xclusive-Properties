@@ -39,7 +39,8 @@
     "rehype-raw": "^7.0.0",
     "remark-gfm": "^4.0.1",
     "styled-components": "^6.1.13",
-    "tailwind-merge": "^3.3.1"
+    "tailwind-merge": "^3.3.1",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
