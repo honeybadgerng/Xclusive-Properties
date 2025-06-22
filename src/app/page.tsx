@@ -5,7 +5,7 @@ import ProductCard from "../components/ProductCard";
 import { useCart } from "../context/CartContext";
 import HeroSection from "../components/HeroSection"; // Import the HeroSection component
 import Footer from "../components/Footer";
-
+import PropertySearch from "../components/PropertySearch"; // Import the PropertySearch component
 interface Product {
   _id: string;
   name: string;
@@ -32,10 +32,18 @@ export default function HomePage() {
     alert(`${product.name} added to cart!`);
   };
 
+  const handleSearch = (filters: any) => {
+    console.log("Search filters:", filters);
+    // In a real app, we would use these filters to fetch properties from an API
+  };
+
   return (
     <div>
       {/* Hero Section */}
       <HeroSection />
+      <div className="container mx-auto px-4 -mt-8 relative z-20">
+        <PropertySearch onSearch={handleSearch} />
+      </div>
 
       {/* Product Listings */}
       <div className="p-6">
