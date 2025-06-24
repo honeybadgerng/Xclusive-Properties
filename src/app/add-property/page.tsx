@@ -175,8 +175,8 @@ function generateSlug(title: string): string {
 export default function AddPropertyPage() {
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
-  const [marketStatus, setMarketStatus] = useState("available");
-  const [category, setCategory] = useState("for rent");
+  const [marketStatus, setMarketStatus] = useState("");
+  const [category, setCategory] = useState("");
   const [type, setType] = useState("");
   const [subtype, setSubtype] = useState("");
   const [price, setPrice] = useState("");
@@ -291,6 +291,7 @@ export default function AddPropertyPage() {
             value={marketStatus}
             onChange={(e) => setMarketStatus(e.target.value)}
           >
+            <option>Select Market Status</option>
             <option>available</option>
             <option>rented</option>
             <option>sold</option>
@@ -303,6 +304,7 @@ export default function AddPropertyPage() {
             value={category}
             onChange={(e) => setCategory(e.target.value)}
           >
+            <option>Select Category</option>
             <option>for rent</option>
             <option>for sale</option>
             <option>joint venture</option>
@@ -413,6 +415,7 @@ export default function AddPropertyPage() {
             value={paymentFrequency}
             onChange={(e) => setPaymentFrequency(e.target.value)}
           >
+            <option value="">Select payment frequency</option>
             <option>per annum</option>
             <option>per month</option>
             <option>per week</option>
