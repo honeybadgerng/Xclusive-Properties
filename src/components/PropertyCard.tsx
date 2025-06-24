@@ -89,7 +89,7 @@ const PropertyCard: React.FC<PropertyProps> = ({
           {/* Price */}
           <div className="mt-3 mb-4">
             <div className="text-lg font-bold">₦{formatPrice(price.naira)}</div>
-            <div className="text-xs text-muted-foreground">Pi {price.pi}</div>
+            <div className="text-xs text-muted-foreground">USDT {price.pi}</div>
           </div>
 
           {/* Property Features */}
