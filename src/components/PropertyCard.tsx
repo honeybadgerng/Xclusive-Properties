@@ -1,71 +1,83 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 import { Bed, Bath, MapPin, MaximizeIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
-export interface PropertyProps {
-  id: string;
+export interface PropertyCardData {
+  _id: string;
   title: string;
-  location: string;
-  price: {
-    naira: number;
-    pi: number;
-  };
-  bedrooms: number;
-  bathrooms: number;
-  size: number;
-  type: "sale" | "rent" | "short-let";
-  imageUrl: string;
+  slug: string;
+  state: string;
+  city: string;
+  street: string;
+  category: "for sale" | "for rent" | "short-let" | "joint venture";
+  price: number;
+  usdtPrice: number;
+  bedrooms?: number;
+  bathrooms?: number;
+  totalArea?: number;
+  images: string[];
 }
 
-const PropertyCard: React.FC<PropertyProps> = ({
-  id,
-  title,
-  location,
-  price,
-  bedrooms,
-  bathrooms,
-  size,
-  type,
-  imageUrl,
+const PropertyCard: React.FC<{ property: PropertyCardData }> = ({
+  property,
 }) => {
-  // Format price with commas
-  const formatPrice = (price: number) => {
-    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  };
+  const {
+    slug,
+    title,
+    state,
+    city,
+    street,
+    category,
+    price,
+    usdtPrice,
+    bedrooms,
+    bathrooms,
+    totalArea,
+    images,
+  } = property;
 
-  // Determine badge color based on property type
+  const imageUrl = images?.[0] || "/placeholder.jpg"; // fallback if no image
+
+  const formatPrice = (val: number) =>
+    val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
   const getBadgeVariant = () => {
-    switch (type) {
-      case "sale":
+    switch (category) {
+      case "for sale":
         return "default";
-      case "rent":
+      case "for rent":
         return "secondary";
       case "short-let":
         return "outline";
+      case "joint venture":
+        return "destructive";
       default:
         return "default";
     }
   };
 
-  // Get label text based on property type
   const getTypeLabel = () => {
-    switch (type) {
-      case "sale":
+    switch (category) {
+      case "for sale":
         return "For Sale";
-      case "rent":
+      case "for rent":
         return "For Rent";
       case "short-let":
         return "Short Let";
+      case "joint venture":
+        return "Joint Venture";
       default:
         return "";
     }
   };
 
   return (
-    <Link href={`/properties/${id}`} className="group">
+    <Link href={`/properties/${slug}`} className="group">
       <div className="bg-card rounded-lg overflow-hidden transition-all duration-300 hover:translate-y-[-5px] property-card-shadow">
-        {/* Image Container */}
+        {/* Image */}
         <div className="relative aspect-video overflow-hidden">
           <img
             src={imageUrl}
@@ -83,32 +95,34 @@ const PropertyCard: React.FC<PropertyProps> = ({
 
           <div className="flex items-center text-muted-foreground text-sm mt-1">
             <MapPin className="h-3.5 w-3.5 mr-1" />
-            <span className="line-clamp-1">{location}</span>
+            <span className="line-clamp-1">{`${street}, ${city}, ${state}`}</span>
           </div>
 
           {/* Price */}
           <div className="mt-3 mb-4">
-            <div className="text-lg font-bold">₦{formatPrice(price.naira)}</div>
-            <div className="text-xs text-muted-foreground">USDT {price.pi}</div>
+            <div className="text-lg font-bold">₦{formatPrice(price)}</div>
+            <div className="text-xs text-muted-foreground">
+              USDT {usdtPrice}
+            </div>
           </div>
 
-          {/* Property Features */}
+          {/* Features */}
           <div className="flex items-center justify-between pt-3 border-t border-border">
             <div className="flex items-center text-muted-foreground text-sm">
               <Bed className="h-4 w-4 mr-1" />
               <span>
-                {bedrooms} {bedrooms === 1 ? "Bed" : "Beds"}
+                {bedrooms ?? 0} {bedrooms === 1 ? "Bed" : "Beds"}
               </span>
             </div>
             <div className="flex items-center text-muted-foreground text-sm">
               <Bath className="h-4 w-4 mr-1" />
               <span>
-                {bathrooms} {bathrooms === 1 ? "Bath" : "Baths"}
+                {bathrooms ?? 0} {bathrooms === 1 ? "Bath" : "Baths"}
               </span>
             </div>
             <div className="flex items-center text-muted-foreground text-sm">
               <MaximizeIcon className="h-4 w-4 mr-1" />
-              <span>{size} m²</span>
+              <span>{totalArea ?? 0} m²</span>
             </div>
           </div>
         </div>

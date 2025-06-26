@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import {
   Shield,
@@ -9,7 +11,7 @@ import {
 } from "lucide-react";
 
 interface Feature {
-  icon: React.ReactNode;
+  icon: JSX.Element;
   title: string;
   description: string;
 }
@@ -53,7 +55,7 @@ const features: Feature[] = [
   },
 ];
 
-const FeatureSection: React.FC = () => {
+const FeaturedSection: React.FC = () => {
   return (
     <section className="py-16 bg-muted/50">
       <div className="container mx-auto px-4">
@@ -63,7 +65,7 @@ const FeatureSection: React.FC = () => {
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
             We provide a premium real estate experience with exclusive features
-            and benefits
+            and benefits.
           </p>
         </div>
 
@@ -88,4 +90,4 @@ const FeatureSection: React.FC = () => {
   );
 };
 
-export default FeatureSection;
+export default FeaturedSection;
