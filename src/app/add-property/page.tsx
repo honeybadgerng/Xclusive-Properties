@@ -240,6 +240,8 @@ export default function AddPropertyPage() {
       coveredArea: Number(coveredArea),
       furnished,
       serviced,
+      featured,
+      premium,
       description,
       videoUrl,
       images: images.split(","),
