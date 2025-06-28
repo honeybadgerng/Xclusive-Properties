@@ -43,6 +43,7 @@ const PropertiesPage = () => {
 
   return (
     <section className="bg-background min-h-screen">
+      {/* Filters */}
       <div className="bg-primary text-white py-10">
         <div className="container mx-auto px-4">
           <h1 className="text-3xl md:text-4xl font-bold">Browse Properties</h1>
@@ -53,31 +54,12 @@ const PropertiesPage = () => {
       </div>
 
       <div className="container mx-auto px-4 py-8">
-        {/* Mobile Filter Toggle */}
-        <div className="md:hidden mb-4">
-          <Button
-            variant="outline"
-            onClick={() => setShowFilters(!showFilters)}
-            className="w-full flex items-center justify-center"
-          >
-            <Filter className="mr-2 h-4 w-4" />
-            {showFilters ? "Hide Filters" : "Show Filters"}
-          </Button>
+        <div className="mb-8">
+          <h2 className="text-xl font-semibold mb-4">Filter Properties</h2>
+          <PropertySearch onSearch={fetchProperties} />
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* Filters */}
-          <div
-            className={`${
-              showFilters ? "block" : "hidden"
-            } lg:block lg:col-span-1`}
-          >
-            <div className="sticky top-20">
-              <h2 className="text-xl font-semibold mb-4">Filter Properties</h2>
-              <PropertySearch onSearch={fetchProperties} />
-            </div>
-          </div>
-
+        <div className="grid grid-cols-1 ">
           {/* Properties */}
           <div className="lg:col-span-3">
             {/* View toggle and count */}
