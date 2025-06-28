@@ -5,6 +5,7 @@ import PropertyCard from "./PropertyCard";
 import type { PropertyCardData } from "./PropertyCard";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface FeaturedPropertiesClientProps {
   properties: PropertyCardData[];
@@ -16,6 +17,7 @@ const FeaturedPropertiesClient: React.FC<FeaturedPropertiesClientProps> = ({
   useEffect(() => {
     console.log("Fetched properties:", properties);
   }, [properties]);
+  const router = useRouter();
   return (
     <section className="py-16 bg-background">
       <div className="container mx-auto px-4">
@@ -36,7 +38,10 @@ const FeaturedPropertiesClient: React.FC<FeaturedPropertiesClientProps> = ({
         </div>
 
         <div className="text-center mt-12">
-          <Button className="bg-secondary hover:bg-secondary/90 text-primary">
+          <Button
+            onClick={() => router.push("/properties")}
+            className="bg-secondary hover:bg-secondary/90 text-primary"
+          >
             View All Properties
             <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
