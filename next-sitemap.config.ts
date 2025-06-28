@@ -1,7 +1,7 @@
 import { fetchSlugs } from "./scripts/fetchSlugs";
 
 const config = {
-  siteUrl: "https://store.rjbworld.org",
+  siteUrl: "https://properties.rjbworld.org",
   generateRobotsTxt: true,
   sitemapSize: 5000,
   changefreq: "daily",
