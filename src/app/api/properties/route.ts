@@ -42,9 +42,13 @@ export async function GET(req: Request) {
   try {
     await dbConnect();
     const url = new URL(req.url);
-    const slug = url.searchParams.get("slug");
+    const params = url.searchParams;
 
-    if (slug) {
+    const filters: any = {};
+
+    // Search by slug (direct fetch)
+    if (params.has("slug")) {
+      const slug = params.get("slug");
       const prop = await Property.findOne({ slug }).lean();
       if (!prop)
         return NextResponse.json(
@@ -54,7 +58,45 @@ export async function GET(req: Request) {
       return NextResponse.json(prop);
     }
 
-    const props = await Property.find({}).lean();
+    // Location (search across state, city, street)
+    if (params.has("location")) {
+      const location = params.get("location")!;
+      filters.$or = [
+        { city: { $regex: location, $options: "i" } },
+        { state: { $regex: location, $options: "i" } },
+        { street: { $regex: location, $options: "i" } },
+      ];
+    }
+
+    // Type → maps to `category` in DB
+    if (params.has("type")) {
+      filters.category = params.get("type");
+    }
+
+    // Purpose (sale/rent/short-let)
+    if (params.has("purpose")) {
+      filters.purpose = params.get("purpose");
+    }
+
+    // Bedrooms
+    if (params.has("beds")) {
+      filters.bedrooms = { $gte: parseInt(params.get("beds")!) };
+    }
+
+    // Price range
+    if (params.has("minPrice") || params.has("maxPrice")) {
+      filters.price = {};
+      if (params.has("minPrice")) {
+        filters.price.$gte = parseInt(params.get("minPrice")!);
+      }
+      if (params.has("maxPrice")) {
+        filters.price.$lte = parseInt(params.get("maxPrice")!);
+      }
+    }
+
+    console.log("Applied Filters:", filters); // Optional: helpful debug
+
+    const props = await Property.find(filters).lean();
     return NextResponse.json(props);
   } catch (error) {
     console.error(error);
