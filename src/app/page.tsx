@@ -5,7 +5,7 @@ import HeroSection from "../components/HeroSection";
 import Footer from "../components/Footer";
 import FeaturedProperties from "../components/FeaturedProperties.server";
 import FeatureSection from "@/components/FeatureSection";
-import TestimonialSection from "@/components/TestimonialSection";
+// import TestimonialSection from "@/components/TestimonialSection";
 import CallToAction from "@/components/CallToAction";
 import PropertySearch from "@/components/PropertySearch";
 
@@ -38,7 +38,7 @@ export default function HomePage() {
 
       <FeaturedProperties />
       <FeatureSection />
-      <TestimonialSection />
+      {/* <TestimonialSection /> */}
       <CallToAction />
       <Footer />
     </div>
