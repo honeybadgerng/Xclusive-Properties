@@ -151,28 +151,41 @@ const Footer: React.FC = () => {
           <div>
             <h3 className="text-xl font-bold mb-4">Contact Us</h3>
             <ul className="space-y-3">
-              <li className="flex items-start">
+              {/* <li className="flex items-start">
                 <MapPin className="h-5 w-5 mr-2 text-secondary flex-shrink-0 mt-0.5" />
                 <span className="text-sm opacity-80">
                   123 Victoria Island, Lagos, Nigeria
                 </span>
+              </li> */}
+              <li className="flex items-center">
+                <a href="tel:+2348059522376">
+                  <Phone className="h-5 w-5 mr-2 text-secondary flex-shrink-0" />
+                  <span className="text-sm opacity-80">+2348059522376</span>
+                </a>
               </li>
               <li className="flex items-center">
-                <Phone className="h-5 w-5 mr-2 text-secondary flex-shrink-0" />
-                <span className="text-sm opacity-80">+234 801 234 5678</span>
-              </li>
-              <li className="flex items-center">
-                <Mail className="h-5 w-5 mr-2 text-secondary flex-shrink-0" />
-                <span className="text-sm opacity-80">connect@rjbworld.org</span>
+                <a href="mailto:rjbxclusive@gmail.com">
+                  <Mail className="h-5 w-5 mr-2 text-secondary flex-shrink-0" />
+                  <span className="text-sm opacity-80">
+                    connect@rjbworld.org
+                  </span>
+                </a>
               </li>
             </ul>
           </div>
         </div>
 
         <div className="border-t border-white/10 mt-8 pt-6 text-center text-sm opacity-60">
-          <p>
-            &copy; {new Date().getFullYear()} RJB World. All rights reserved.
-          </p>
+          <a
+            href="https://rjbworld.org"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-secondary hover:underline"
+          >
+            <p>
+              &copy; {new Date().getFullYear()} RJB World. All rights reserved.
+            </p>
+          </a>
         </div>
       </div>
     </footer>
