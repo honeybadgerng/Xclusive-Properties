@@ -59,7 +59,7 @@ const subtypes: { [key: string]: string[] } = {
     "Office Space",
     "Shop",
     "Warehouse",
-    "Hotel",
+    "Hotel/Guest House",
     "Event Centre",
     "Restaurant",
     "Filling Station",
@@ -170,7 +170,7 @@ const PropertySearch = ({ onSearch }: { onSearch: (filters: any) => void }) => {
           </div>
 
           <div>
-            <Label>Location</Label>
+            <Label>Location </Label>
             <Input
               placeholder="City, Area or State"
               value={filters.location}
