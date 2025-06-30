@@ -17,13 +17,31 @@ const PropertiesPage = () => {
     setLoading(true);
     const params = new URLSearchParams();
 
-    if (filters.location) params.append("location", filters.location);
-    if (filters.type) params.append("type", filters.type);
-    if (filters.purpose) params.append("purpose", filters.purpose);
-    if (filters.beds) params.append("beds", filters.beds);
-    if (filters.priceRange) {
-      params.append("minPrice", filters.priceRange[0]);
-      params.append("maxPrice", filters.priceRange[1]);
+    // if (filters.location) params.append("location", filters.location);
+    // if (filters.type) params.append("type", filters.type);
+    // if (filters.purpose) params.append("purpose", filters.purpose);
+    // if (filters.beds) params.append("beds", filters.beds);
+    // if (filters.priceRange) {
+    //   params.append("minPrice", filters.priceRange[0]);
+    //   params.append("maxPrice", filters.priceRange[1]);
+
+    for (const [key, value] of Object.entries(filters)) {
+      if (
+        value !== "" &&
+        value !== undefined &&
+        value !== null &&
+        !(Array.isArray(value) && value.length === 0)
+      ) {
+        // Convert boolean to string
+        if (typeof value === "boolean") {
+          if (value === true) params.append(key, "true");
+        } else if (Array.isArray(value)) {
+          // For facilities (array), send each value
+          value.forEach((v) => params.append(key, v));
+        } else {
+          params.append(key, value.toString());
+        }
+      }
     }
 
     try {
