@@ -160,13 +160,30 @@ const PropertySearch = ({ onSearch }: { onSearch: (filters: any) => void }) => {
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {/* Keyword search */}
-          <div>
+          {/* <div>
             <Label>Keyword (e.g., Lekki, Duplex)</Label>
             <Input
               placeholder="Any keyword"
               value={filters.q}
               onChange={(e) => handleChange("q", e.target.value)}
             />
+          </div> */}
+          <div>
+            <Label>Category</Label>
+            <Select
+              value={filters.category}
+              onValueChange={(value) => handleChange("category", value)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select category" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="for sale">For Sale</SelectItem>
+                <SelectItem value="for rent">For Rent</SelectItem>
+                <SelectItem value="short-let">Short-let</SelectItem>
+                <SelectItem value="joint venture">Joint Venture</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
           <div>
@@ -271,24 +288,6 @@ const PropertySearch = ({ onSearch }: { onSearch: (filters: any) => void }) => {
         {showMore && (
           <>
             <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div>
-                <Label>Category</Label>
-                <Select
-                  value={filters.category}
-                  onValueChange={(value) => handleChange("category", value)}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select category" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="for sale">For Sale</SelectItem>
-                    <SelectItem value="for rent">For Rent</SelectItem>
-                    <SelectItem value="short-let">Short-let</SelectItem>
-                    <SelectItem value="joint venture">Joint Venture</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
               <div>
                 <Label>Market Status</Label>
                 <Select
