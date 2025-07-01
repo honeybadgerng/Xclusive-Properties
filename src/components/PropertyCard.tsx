@@ -109,7 +109,7 @@ const PropertyCard: React.FC<{ property: PropertyCardData }> = ({
           <div className="mt-3 mb-4">
             <div className="text-lg font-bold">₦{formatPrice(price)}</div>
             <div className="text-xs text-muted-foreground">
-              USDT {usdtPrice}
+              USDT {formatPrice(usdtPrice)}
             </div>
           </div>
 

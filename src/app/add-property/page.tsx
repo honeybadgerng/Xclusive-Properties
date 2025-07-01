@@ -197,7 +197,8 @@ export default function AddPropertyPage() {
   const [premium, setPremium] = useState(false);
   const [description, setDescription] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
-  const [images, setImages] = useState("");
+  const [images, setImages] = useState<File[]>([]);
+
   const [facilities, setFacilities] = useState<string[]>([]);
 
   const router = useRouter();
@@ -244,21 +245,33 @@ export default function AddPropertyPage() {
       premium,
       description,
       videoUrl,
-      images: images.split(","),
       facilities,
     };
 
-    const res = await fetch("/api/properties", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(property),
-    });
+    try {
+      const formData = new FormData();
+      formData.append("data", JSON.stringify(property));
 
-    if (res.ok) {
-      alert("Property added!");
-      router.push("/admin");
-    } else {
-      alert("Failed to add property.");
+      images.forEach((file) => {
+        formData.append("images", file);
+      });
+
+      const res = await fetch("/api/properties/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (res.ok) {
+        alert("Property added!");
+        router.push("/admin");
+      } else {
+        const error = await res.json();
+        console.error("Upload failed:", error);
+        alert("Failed to add property.");
+      }
+    } catch (err) {
+      console.error("Unexpected error:", err);
+      alert("Something went wrong.");
     }
   };
 
@@ -533,14 +546,71 @@ export default function AddPropertyPage() {
         </div>
 
         <div className={styles.inputGroup}>
-          <label className={styles.label}>Images (comma-separated URLs)</label>
+          <label className={styles.label}>Upload Images (max 20)</label>
           <input
-            className={styles.input}
-            value={images}
-            onChange={(e) => setImages(e.target.value)}
-            required
+            type="file"
+            multiple
+            accept="image/*"
+            onChange={(e) => {
+              if (e.target.files) {
+                const files = Array.from(e.target.files);
+                if (files.length > 6) {
+                  alert("You can only upload up to 20 images.");
+                  return;
+                }
+                setImages(files);
+              }
+            }}
           />
+
+          {/* Preview & reorder */}
+          <div className={styles.previewContainer}>
+            {images.map((file, index) => (
+              <div key={index} className={styles.previewItem}>
+                <img
+                  src={URL.createObjectURL(file)}
+                  alt={`preview-${index}`}
+                  className={styles.previewImage}
+                />
+                {/* Move up */}
+                {index > 0 && (
+                  <button
+                    type="button"
+                    className={styles.moveButton}
+                    onClick={() => {
+                      const updated = [...images];
+                      [updated[index - 1], updated[index]] = [
+                        updated[index],
+                        updated[index - 1],
+                      ];
+                      setImages(updated);
+                    }}
+                  >
+                    ↑
+                  </button>
+                )}
+                {/* Move down */}
+                {index < images.length - 1 && (
+                  <button
+                    type="button"
+                    className={styles.moveButton}
+                    onClick={() => {
+                      const updated = [...images];
+                      [updated[index], updated[index + 1]] = [
+                        updated[index + 1],
+                        updated[index],
+                      ];
+                      setImages(updated);
+                    }}
+                  >
+                    ↓
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
+
         <div className={styles.inputGroup}>
           <label className={styles.label}>Description</label>
           <textarea
