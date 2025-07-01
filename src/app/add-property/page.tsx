@@ -546,17 +546,69 @@ export default function AddPropertyPage() {
         </div>
 
         <div className={styles.inputGroup}>
-          <label className={styles.label}>Upload Images (max 6)</label>
+          <label className={styles.label}>Upload Images (max 20)</label>
           <input
             type="file"
             multiple
             accept="image/*"
             onChange={(e) => {
               if (e.target.files) {
-                setImages(Array.from(e.target.files));
+                const files = Array.from(e.target.files);
+                if (files.length > 6) {
+                  alert("You can only upload up to 20 images.");
+                  return;
+                }
+                setImages(files);
               }
             }}
           />
+
+          {/* Preview & reorder */}
+          <div className={styles.previewContainer}>
+            {images.map((file, index) => (
+              <div key={index} className={styles.previewItem}>
+                <img
+                  src={URL.createObjectURL(file)}
+                  alt={`preview-${index}`}
+                  className={styles.previewImage}
+                />
+                {/* Move up */}
+                {index > 0 && (
+                  <button
+                    type="button"
+                    className={styles.moveButton}
+                    onClick={() => {
+                      const updated = [...images];
+                      [updated[index - 1], updated[index]] = [
+                        updated[index],
+                        updated[index - 1],
+                      ];
+                      setImages(updated);
+                    }}
+                  >
+                    ↑
+                  </button>
+                )}
+                {/* Move down */}
+                {index < images.length - 1 && (
+                  <button
+                    type="button"
+                    className={styles.moveButton}
+                    onClick={() => {
+                      const updated = [...images];
+                      [updated[index], updated[index + 1]] = [
+                        updated[index + 1],
+                        updated[index],
+                      ];
+                      setImages(updated);
+                    }}
+                  >
+                    ↓
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className={styles.inputGroup}>
