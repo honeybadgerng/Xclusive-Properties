@@ -229,10 +229,16 @@ export default function PropertyContent({ property }: { property: Property }) {
           <div className="lg:col-span-1">
             <div className="bg-card border border-border rounded-lg p-6 mb-6">
               <h3 className="text-lg font-semibold mb-2">Book an Inspection</h3>
-              <Button className="w-full mb-3">
-                <Calendar className="mr-2 h-4 w-4" />
-                Book Now
-              </Button>
+              <a
+                href="https://wa.me/2348059522376?text=Hello%2C%20I%20would%20like%20to%20book%20an%20inspection%20for%20this%20property."
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button className="w-full mb-3">
+                  <Calendar className="mr-2 h-4 w-4" />
+                  Book Now
+                </Button>
+              </a>
               <div className="text-center mt-4 text-sm text-muted-foreground">
                 <Info className="h-4 w-4 inline mr-1" />
                 No payment required
