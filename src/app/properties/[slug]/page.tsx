@@ -7,6 +7,7 @@ import { useParams } from "next/navigation";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import ReactMarkdown from "react-markdown";
 import {
   Bed,
   Bath,
@@ -154,7 +155,7 @@ const PropertyDetails = () => {
                 ₦{formatPrice(property.price)}
               </div>
               <div className="text-sm text-muted-foreground">
-                ≈ ${property.usdtPrice} USDT
+                ≈ ${formatPrice(property.usdtPrice)} USDT
               </div>
             </div>
 
@@ -201,7 +202,11 @@ const PropertyDetails = () => {
 
               <TabsContent value="overview" className="space-y-4">
                 <h2 className="text-xl font-semibold">Property Description</h2>
-                <p className="text-muted-foreground">{property.description}</p>
+                <div className="text-muted-foreground space-y-2">
+                  <div className="prose prose-sm max-w-none text-muted-foreground whitespace-pre-line text-justify">
+                    <ReactMarkdown>{property.description}</ReactMarkdown>
+                  </div>
+                </div>
               </TabsContent>
 
               <TabsContent value="features">
