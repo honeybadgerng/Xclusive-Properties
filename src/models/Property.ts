@@ -45,7 +45,7 @@ export interface IProperty extends Document {
 
 // Validate image array to ensure no more than 6 images
 function imageLimit(val: string[]) {
-  return val.length <= 6;
+  return val.length <= 20; // Adjusted limit to 20 images
 }
 
 // Mongoose Schema
