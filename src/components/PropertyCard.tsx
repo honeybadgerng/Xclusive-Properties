@@ -84,7 +84,14 @@ const PropertyCard: React.FC<{ property: PropertyCardData }> = ({
             alt={title}
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
           />
-          <Badge className="absolute top-3 left-3" variant={getBadgeVariant()}>
+          <Badge
+            className={`absolute top-3 left-3 ${
+              category === "short-let"
+                ? "bg-blue-500 text-white hover:bg-blue-600"
+                : ""
+            }`}
+            variant={getBadgeVariant()}
+          >
             {getTypeLabel()}
           </Badge>
         </div>
