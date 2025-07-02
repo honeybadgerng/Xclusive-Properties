@@ -554,7 +554,7 @@ export default function AddPropertyPage() {
             onChange={(e) => {
               if (e.target.files) {
                 const files = Array.from(e.target.files);
-                if (files.length > 6) {
+                if (files.length > 20) {
                   alert("You can only upload up to 20 images.");
                   return;
                 }
