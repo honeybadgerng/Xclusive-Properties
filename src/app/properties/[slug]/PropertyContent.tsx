@@ -230,7 +230,9 @@ export default function PropertyContent({ property }: { property: Property }) {
             <div className="bg-card border border-border rounded-lg p-6 mb-6">
               <h3 className="text-lg font-semibold mb-2">Book an Inspection</h3>
               <a
-                href="https://wa.me/2348059522376?text=Hello%2C%20I%20would%20like%20to%20book%20an%20inspection%20for%20this%20property."
+                href={`https://wa.me/2348059522376?text=${encodeURIComponent(
+                  `Hello, I would like to book an inspection for this property: https://properties.rjbworld.org/properties/${property.slug}`
+                )}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >

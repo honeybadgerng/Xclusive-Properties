@@ -39,7 +39,7 @@ const features: Feature[] = [
     icon: <PiggyBank className="h-10 w-10 text-secondary" />,
     title: "Flexible Payments",
     description:
-      "Multiple payment options including Naira, Pi cryptocurrency, and installment plans.",
+      "Multiple payment options including Naira, Cryptocurrency, and installment plans.",
   },
   {
     icon: <MapPin className="h-10 w-10 text-secondary" />,
