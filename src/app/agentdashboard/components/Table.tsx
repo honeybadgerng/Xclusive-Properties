@@ -82,7 +82,7 @@ const Table: React.FC<TableProps> = ({
               ))}
               <td className="border border-gray-300 px-4 py-2 flex gap-2">
                 <Link
-                  href={`/admin/edit-${itemType}/${item._id}`}
+                  href={`/agentdashboard/edit-${itemType}/${item._id}`}
                   className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600"
                 >
                   Edit

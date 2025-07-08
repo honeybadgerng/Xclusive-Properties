@@ -1,7 +1,8 @@
 import dbConnect from "@/utils/dbConnect";
 import Property from "@/models/Property";
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import jwt from "jsonwebtoken";
+import { getTokenFromRequest } from "@/utils/auth"; // helper to decode JWT
 
 export async function POST(req: Request) {
   try {
@@ -157,6 +158,76 @@ export async function GET(req: Request) {
     console.error(error);
     return NextResponse.json(
       { error: "Failed to fetch properties" },
+      { status: 500 }
+    );
+  }
+}
+export async function PUT(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    await dbConnect();
+    const id = params.id;
+
+    const token = getTokenFromRequest(req);
+    if (!token || !token.id) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const body = await req.json();
+    const updated = await Property.findOneAndUpdate(
+      { _id: id, user: token.id }, // ✅ user must own it
+      { ...body },
+      { new: true }
+    );
+
+    if (!updated) {
+      return NextResponse.json(
+        { error: "Property not found or unauthorized" },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json(updated);
+  } catch (err) {
+    console.error(err);
+    return NextResponse.json(
+      { error: "Failed to update property" },
+      { status: 500 }
+    );
+  }
+}
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    await dbConnect();
+    const id = params.id;
+
+    const token = getTokenFromRequest(req);
+    if (!token || !token.id) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const deleted = await Property.findOneAndDelete({
+      _id: id,
+      user: token.id, // ✅ user must own it
+    });
+
+    if (!deleted) {
+      return NextResponse.json(
+        { error: "Property not found or unauthorized" },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json({ message: "Property deleted successfully" });
+  } catch (err) {
+    console.error(err);
+    return NextResponse.json(
+      { error: "Failed to delete property" },
       { status: 500 }
     );
   }
