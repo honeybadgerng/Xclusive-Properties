@@ -175,9 +175,33 @@ export async function PUT(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const body = await req.json();
+    // ✅ Parse multipart form data
+    const formData = await req.formData();
+
+    const raw = formData.get("data");
+    console.log("📦 raw form data from 'data':", raw);
+    if (!raw || typeof raw !== "string") {
+      return NextResponse.json(
+        { error: "Missing or invalid form data" },
+        { status: 400 }
+      );
+    }
+
+    let body;
+    try {
+      body = JSON.parse(raw);
+    } catch (err) {
+      console.error("Failed to parse JSON in PUT", err, "RAW:", raw);
+      return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
+    }
+
+    // images (if any)
+    const images = formData.getAll("images"); // These are Blob/File objects
+
+    // You can optionally process image uploads here
+
     const updated = await Property.findOneAndUpdate(
-      { _id: id, user: token.id }, // ✅ user must own it
+      { _id: id, user: token.id },
       { ...body },
       { new: true }
     );
@@ -191,13 +215,14 @@ export async function PUT(
 
     return NextResponse.json(updated);
   } catch (err) {
-    console.error(err);
+    console.error("PUT /api/properties/:id error", err);
     return NextResponse.json(
       { error: "Failed to update property" },
       { status: 500 }
     );
   }
 }
+
 export async function DELETE(
   req: NextRequest,
   { params }: { params: { id: string } }
