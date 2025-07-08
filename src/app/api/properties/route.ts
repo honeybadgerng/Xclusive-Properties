@@ -1,6 +1,8 @@
 import dbConnect from "@/utils/dbConnect";
 import Property from "@/models/Property";
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
+import jwt from "jsonwebtoken";
+import { getTokenFromRequest } from "@/utils/auth"; // helper to decode JWT
 
 export async function POST(req: Request) {
   try {
@@ -38,6 +40,8 @@ export async function POST(req: Request) {
   }
 }
 
+const JWT_SECRET = process.env.JWT_SECRET!;
+
 export async function GET(req: Request) {
   try {
     await dbConnect();
@@ -45,6 +49,24 @@ export async function GET(req: Request) {
     const params = url.searchParams;
 
     const filters: any = {};
+
+    // 👤 Check for "me=true" to filter for current logged-in agent
+    const me = params.get("me") === "true";
+    if (me) {
+      const authHeader = req.headers.get("authorization");
+      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      }
+
+      try {
+        const token = authHeader.split(" ")[1];
+        const decoded: any = jwt.verify(token, JWT_SECRET);
+        filters.user = decoded.id; // Only fetch properties created by this user
+      } catch (err) {
+        console.error("JWT verification failed", err);
+        return NextResponse.json({ error: "Invalid token" }, { status: 401 });
+      }
+    }
 
     // Search by slug (direct fetch)
     if (params.has("slug")) {
@@ -58,33 +80,6 @@ export async function GET(req: Request) {
       return NextResponse.json(prop);
     }
 
-    // Unified $or filter for both q (keyword) and location
-    // const orFilters: any[] = [];
-
-    // if (params.has("q")) {
-    //   const q = params.get("q")!;
-    //   orFilters.push(
-    //     { title: { $regex: q, $options: "i" } },
-    //     { slug: { $regex: q, $options: "i" } },
-    //     { city: { $regex: q, $options: "i" } },
-    //     { state: { $regex: q, $options: "i" } },
-    //     { street: { $regex: q, $options: "i" } }
-    //   );
-    // }
-
-    // if (params.has("location")) {
-    //   const location = params.get("location")!;
-    //   orFilters.push(
-    //     { city: { $regex: location, $options: "i" } },
-    //     { state: { $regex: location, $options: "i" } },
-    //     { street: { $regex: location, $options: "i" } }
-    //   );
-    // }
-
-    // if (orFilters.length > 0) {
-    //   filters.$or = orFilters;
-    // }
-
     // working perfect Location location logic (search across state, city, street)
     if (params.has("location")) {
       const location = params.get("location")!;
@@ -94,22 +89,6 @@ export async function GET(req: Request) {
         { street: { $regex: location, $options: "i" } },
       ];
     }
-
-    // Type → maps to `category` in DB
-    // if (params.has("type")) {
-    //   filters.category = params.get("type");
-    // }
-
-    // // Purpose (sale/rent/short-let)
-    // if (params.has("purpose")) {
-    //   filters.purpose = params.get("purpose");
-    // }
-
-    // // ✅ Property Type, Subtype, Category, Market Status
-    // ["type", "subtype", "category", "marketStatus"].forEach((field) => {
-    //   const value = params.get(field);
-    //   if (value) filters[field] = { $regex: new RegExp(`^${value}$`, "i") }; // case-insensitive match
-    // });
 
     ["type", "category", "marketStatus"].forEach((field) => {
       const value = params.get(field);
@@ -179,6 +158,101 @@ export async function GET(req: Request) {
     console.error(error);
     return NextResponse.json(
       { error: "Failed to fetch properties" },
+      { status: 500 }
+    );
+  }
+}
+export async function PUT(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    await dbConnect();
+    const id = params.id;
+
+    const token = getTokenFromRequest(req);
+    if (!token || !token.id) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    // ✅ Parse multipart form data
+    const formData = await req.formData();
+
+    const raw = formData.get("data");
+    console.log("📦 raw form data from 'data':", raw);
+    if (!raw || typeof raw !== "string") {
+      return NextResponse.json(
+        { error: "Missing or invalid form data" },
+        { status: 400 }
+      );
+    }
+
+    let body;
+    try {
+      body = JSON.parse(raw);
+    } catch (err) {
+      console.error("Failed to parse JSON in PUT", err, "RAW:", raw);
+      return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
+    }
+
+    // images (if any)
+    const images = formData.getAll("images"); // These are Blob/File objects
+
+    // You can optionally process image uploads here
+
+    const updated = await Property.findOneAndUpdate(
+      { _id: id, user: token.id },
+      { ...body },
+      { new: true }
+    );
+
+    if (!updated) {
+      return NextResponse.json(
+        { error: "Property not found or unauthorized" },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json(updated);
+  } catch (err) {
+    console.error("PUT /api/properties/:id error", err);
+    return NextResponse.json(
+      { error: "Failed to update property" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    await dbConnect();
+    const id = params.id;
+
+    const token = getTokenFromRequest(req);
+    if (!token || !token.id) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const deleted = await Property.findOneAndDelete({
+      _id: id,
+      user: token.id, // ✅ user must own it
+    });
+
+    if (!deleted) {
+      return NextResponse.json(
+        { error: "Property not found or unauthorized" },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json({ message: "Property deleted successfully" });
+  } catch (err) {
+    console.error(err);
+    return NextResponse.json(
+      { error: "Failed to delete property" },
       { status: 500 }
     );
   }

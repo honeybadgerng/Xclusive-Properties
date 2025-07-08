@@ -2,17 +2,19 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import formidable, { File, Files, Fields } from "formidable";
 import { v2 as cloudinary } from "cloudinary";
 import fs from "fs";
+import jwt from "jsonwebtoken";
+
 import dbConnect from "@/utils/dbConnect";
 import Property from "@/models/Property";
 
-// Disable default body parsing (required for formidable)
+const JWT_SECRET = process.env.JWT_SECRET!;
+
 export const config = {
   api: {
     bodyParser: false,
   },
 };
 
-// Setup Cloudinary
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME!,
   api_key: process.env.CLOUDINARY_API_KEY!,
@@ -39,13 +41,28 @@ export default async function handler(
     }
 
     try {
-      // ✅ Handle possible array from form data
+      // ✅ Extract token from Authorization header
+      const authHeader = req.headers.authorization;
+      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return res.status(401).json({ error: "Missing or invalid token" });
+      }
+
+      const token = authHeader.split(" ")[1];
+      const decoded = jwt.verify(token, JWT_SECRET) as { id: string };
+
+      if (!decoded?.id) {
+        return res
+          .status(400)
+          .json({ error: "User ID not found in token payload" });
+      }
+
+      // ✅ Parse form data
       const rawData = Array.isArray(fields.data)
         ? fields.data[0]
         : (fields.data as unknown as string);
-
       const data = JSON.parse(rawData);
 
+      // ✅ Handle images
       const rawFiles = files.images;
       const fileArray = Array.isArray(rawFiles)
         ? rawFiles
@@ -54,23 +71,27 @@ export default async function handler(
       const imageUrls: string[] = [];
 
       for (const file of fileArray) {
-        if (!file || !file.filepath) continue;
+        if (!file?.filepath) continue;
 
         const upload = await cloudinary.uploader.upload(file.filepath, {
           folder: "properties",
         });
 
         imageUrls.push(upload.secure_url);
-
-        // ✅ Delete temp file safely
         fs.unlinkSync(file.filepath);
       }
 
-      const newProp = new Property({ ...data, images: imageUrls });
-      await newProp.save();
+      // ✅ Add user ID to the new property
+      const newProperty = new Property({
+        ...data,
+        user: decoded.id, // Attach user ID here
+        images: imageUrls,
+      });
 
-      return res.status(201).json(newProp);
-    } catch (uploadError: unknown) {
+      await newProperty.save();
+
+      return res.status(201).json(newProperty);
+    } catch (uploadError) {
       console.error("Upload failed", uploadError);
       const message =
         uploadError instanceof Error

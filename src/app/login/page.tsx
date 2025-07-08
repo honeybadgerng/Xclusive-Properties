@@ -22,17 +22,28 @@ const Login = () => {
 
       if (!res.ok) {
         console.error("Login error:", data.message);
-        alert(`Login failed: ${data.message}`); // Show the actual error message
+        alert(`Login failed: ${data.message}`);
         return;
       }
 
+      // ✅ Save the token in cookie or localStorage
+      localStorage.setItem("token", data.token);
       document.cookie = `authToken=${data.token}; path=/`;
-      router.push("/admin");
+
+      // ✅ Role-based redirect
+      if (data.role === "admin") {
+        router.push("/admin");
+      } else if (data.role === "agent") {
+        router.push("/agentdashboard");
+      } else {
+        router.push("/"); // Default for customers
+      }
     } catch (error) {
       console.error("Network or unexpected error:", error);
       alert("An unexpected error occurred. Please try again.");
     }
   };
+
   return (
     <div className="max-w-md mx-auto mt-20">
       <h1 className="text-2xl font-bold mb-4">Login</h1>

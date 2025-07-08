@@ -92,6 +92,11 @@ const PropertySchema: Schema = new Schema(
       ],
       required: true,
     },
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     bedrooms: { type: Number },
     toilets: { type: Number },
     bathrooms: { type: Number },
