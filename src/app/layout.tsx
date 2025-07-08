@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { ThemeProvider } from "@/context/ThemeContext";
-
+import { AuthProvider } from "@/context/AuthContext";
 import "./globals.css";
-import { CartProvider } from "../context/CartContext";
+
 import Navbar from "../components/Navbar";
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -30,10 +30,10 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <ThemeProvider>
-          <CartProvider>
+          <AuthProvider>
             <Navbar />
             {children}
-          </CartProvider>
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

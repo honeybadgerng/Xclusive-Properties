@@ -1,9 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useTheme } from "@/context/ThemeContext";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/context/AuthContext";
 import {
   Moon,
   Sun,
@@ -14,14 +16,32 @@ import {
   Clock,
   FileText,
   Phone,
+  LogOut,
+  LogIn,
 } from "lucide-react";
 
 const Navbar: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
+  const { isAuthenticated, logout } = useAuth();
 
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
+  const router = useRouter();
+
+  const toggleMenu = () => setIsOpen(!isOpen);
+
+  // 👇 Check token on mount
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token");
+  //   setIsAuthenticated(!!token);
+  // }, []);
+
+  const handleLogout = () => {
+    logout();
+    router.push("/");
+  };
+
+  const handleLogin = () => {
+    router.push("/login");
   };
 
   const navLinks = [
@@ -90,12 +110,26 @@ const Navbar: React.FC = () => {
               )}
               <span className="sr-only">Toggle theme</span>
             </Button>
-            <Button
-              size="sm"
-              className="bg-secondary hover:bg-secondary/90 text-primary"
-            >
-              Admin Login
-            </Button>
+            {isAuthenticated ? (
+              <Button
+                size="sm"
+                variant="destructive"
+                onClick={handleLogout}
+                className="flex items-center"
+              >
+                <LogOut className="mr-2 h-4 w-4" />
+                Logout
+              </Button>
+            ) : (
+              <Button
+                size="sm"
+                className="bg-secondary hover:bg-secondary/90 text-primary"
+                onClick={handleLogin}
+              >
+                <LogIn className="mr-2 h-4 w-4" />
+                Login
+              </Button>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -141,12 +175,32 @@ const Navbar: React.FC = () => {
               </Link>
             ))}
             <div className="pt-2 pb-3">
-              <Button
-                className="w-full bg-secondary hover:bg-secondary/90 text-primary"
-                size="sm"
-              >
-                Admin Login
-              </Button>
+              {isAuthenticated ? (
+                <Button
+                  size="sm"
+                  variant="destructive"
+                  onClick={() => {
+                    handleLogout();
+                    setIsOpen(false);
+                  }}
+                  className="w-full flex items-center justify-center"
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Logout
+                </Button>
+              ) : (
+                <Button
+                  className="w-full bg-secondary hover:bg-secondary/90 text-primary"
+                  size="sm"
+                  onClick={() => {
+                    handleLogin();
+                    setIsOpen(false);
+                  }}
+                >
+                  <LogIn className="mr-2 h-4 w-4" />
+                  Login
+                </Button>
+              )}
             </div>
           </div>
         </div>
