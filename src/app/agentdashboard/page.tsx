@@ -3,7 +3,7 @@ import { jwtDecode } from "jwt-decode";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import PropertyTable from "../agentdashboard/PropertiesTable";
-import ProductsTable from "./ProductsTable";
+
 import CategoriesTable from "./CategoriesTable";
 import CustomersTable from "./CustomersTable";
 import OrdersTable from "./OrdersTable";
@@ -17,7 +17,7 @@ interface DecodedToken {
 }
 
 const AdminDashboard = () => {
-  const [activeTab, setActiveTab] = useState<string>("products"); // Default tab is products
+  const [activeTab, setActiveTab] = useState<string>("properties"); // Default tab is products
   const [companyName, setCompanyName] = useState("");
 
   useEffect(() => {
@@ -51,16 +51,7 @@ const AdminDashboard = () => {
               Properties
             </button>
           </li>
-          <li>
-            <button
-              className={`w-full text-left p-2 ${
-                activeTab === "products" ? "bg-blue-600" : ""
-              }`}
-              onClick={() => setActiveTab("products")}
-            >
-              Products
-            </button>
-          </li>
+
           <li>
             <button
               className={`w-full text-left p-2 ${
@@ -112,7 +103,6 @@ const AdminDashboard = () => {
 
         {/* Dynamically Render Content based on Active Tab */}
         {activeTab === "properties" && <PropertyTable />}
-        {activeTab === "products" && <ProductsTable />}
         {activeTab === "categories" && <CategoriesTable />}
         {activeTab === "orders" && <OrdersTable />}
         {activeTab === "customers" && <CustomersTable />}

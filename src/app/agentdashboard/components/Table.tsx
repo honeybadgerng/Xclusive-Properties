@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 
@@ -24,10 +26,23 @@ const Table: React.FC<TableProps> = ({
 
   useEffect(() => {
     const fetchItems = async () => {
-      const response = await fetch(apiEndpoint);
-      const data = await response.json();
-      setItems(data.data || []); // Provide fallback
+      try {
+        const token =
+          typeof window !== "undefined" ? localStorage.getItem("token") : null;
+
+        const res = await fetch(apiEndpoint, {
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
+        });
+
+        if (!res.ok) throw new Error("Failed to fetch items");
+
+        const data = await res.json();
+        setItems(data.data || data); // fallback if no `.data`
+      } catch (err) {
+        console.error("Fetch error:", err);
+      }
     };
+
     fetchItems();
   }, [apiEndpoint]);
 
@@ -49,19 +64,20 @@ const Table: React.FC<TableProps> = ({
       <table className="w-full mt-6 border-collapse border border-gray-300">
         <thead className="bg-gray-200">
           <tr>
-            {columns?.map((col) => (
+            {columns.map((col) => (
               <th key={col.key} className="border border-gray-300 px-4 py-2">
                 {col.label}
               </th>
             ))}
+            <th className="border border-gray-300 px-4 py-2">Actions</th>
           </tr>
         </thead>
         <tbody>
           {items.map((item) => (
             <tr key={item._id}>
-              {columns?.map((col) => (
+              {columns.map((col) => (
                 <td key={col.key} className="border border-gray-300 px-4 py-2">
-                  {item[col.key] || "-"}
+                  {item[col.key] ?? "-"}
                 </td>
               ))}
               <td className="border border-gray-300 px-4 py-2 flex gap-2">

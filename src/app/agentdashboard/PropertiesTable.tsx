@@ -15,7 +15,7 @@ const PropertiesTable: React.FC = () => {
       <h1 className="text-2xl font-bold mb-4">Properties</h1>
       <Table
         title="Properties"
-        apiEndpoint="/api/properties"
+        apiEndpoint="/api/properties?me=true"
         itemType="property"
         columns={columns}
       />
