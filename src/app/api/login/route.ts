@@ -41,14 +41,25 @@ export async function POST(req: Request) {
 
     console.log("✅ Password matches. Generating token...");
 
-    // Generate JWT token
-    const token = jwt.sign({ email: user.email, role: user.role }, secret, {
-      expiresIn: "1h",
+    // Generate JWT token with email, role, and _id
+    const token = jwt.sign(
+      {
+        email: user.email,
+        role: user.role,
+        id: user._id,
+        companyName: user.companyName,
+      },
+      secret,
+      { expiresIn: "1h" }
+    );
+
+    // Return the token and role
+    return NextResponse.json({
+      token,
+      role: user.role,
+      id: user._id,
+      companyName: user.companyName,
     });
-
-    console.log("🔑 JWT Token Generated:", token);
-
-    return NextResponse.json({ token });
   } catch (error) {
     console.error("🔥 Login error:", error);
     return NextResponse.json(

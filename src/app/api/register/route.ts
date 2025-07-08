@@ -4,11 +4,11 @@ import dbConnect from "@/utils/dbConnect";
 import User from "@/models/User";
 
 export async function POST(req: Request) {
-  const { email, password, role } = await req.json();
+  const { email, password, role, name, phone, companyName } = await req.json();
 
-  if (!email || !password) {
+  if (!email || !password || !name) {
     return NextResponse.json(
-      { error: "Email and password are required" },
+      { error: "Email, password, and name are required" },
       { status: 400 }
     );
   }
@@ -24,16 +24,20 @@ export async function POST(req: Request) {
       );
     }
 
-    // 🚀 Ensure role is "admin" (even if the frontend sends an empty role)
-    const userRole = role && role.trim() ? role : "admin";
+    // 🚀 Ensure role is "agent" (even if the frontend sends an empty role)
+    const allowedRoles = ["agent", "customer"];
+    const userRole = allowedRoles.includes(role) ? role : "agent";
+
     console.log("👑 Assigning Role:", userRole); // Debugging log
 
     const newUser = new User({
       email,
-      password, // No manual hashing here
+      password,
       role: userRole,
+      name,
+      phone,
+      companyName: userRole === "agent" ? companyName : undefined,
     });
-
     await newUser.save();
 
     console.log("✅ User registered successfully:", { email, role: userRole });
@@ -42,7 +46,7 @@ export async function POST(req: Request) {
     return NextResponse.json(
       {
         message: "User registered successfully",
-        user: { email, role: userRole },
+        user: { email, role: userRole, name, phone, companyName },
       },
       { status: 201 }
     );
