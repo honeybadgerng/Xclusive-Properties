@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
+  const { login } = useAuth();
 
   const handleLogin = async () => {
     try {
@@ -27,9 +29,10 @@ const Login = () => {
       }
 
       // ✅ Save the token in cookie or localStorage
-      localStorage.setItem("token", data.token);
+      // localStorage.setItem("token", data.token);
+      // document.cookie = `authToken=${data.token}; path=/`;
+      login(data.token);
       document.cookie = `authToken=${data.token}; path=/`;
-
       // ✅ Role-based redirect
       if (data.role === "admin") {
         router.push("/admin");
