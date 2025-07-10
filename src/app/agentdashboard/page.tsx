@@ -1,13 +1,8 @@
 "use client";
 import { jwtDecode } from "jwt-decode";
 import { useState, useEffect } from "react";
-import Link from "next/link";
+// import Link from "next/link";
 import PropertyTable from "../agentdashboard/PropertiesTable";
-
-import CategoriesTable from "./CategoriesTable";
-import CustomersTable from "./CustomersTable";
-import OrdersTable from "./OrdersTable";
-import BlogsTable from "./BlogsTable";
 
 interface DecodedToken {
   _id: string;
@@ -48,48 +43,7 @@ const AdminDashboard = () => {
               }`}
               onClick={() => setActiveTab("properties")}
             >
-              Properties
-            </button>
-          </li>
-
-          <li>
-            <button
-              className={`w-full text-left p-2 ${
-                activeTab === "categories" ? "bg-blue-600" : ""
-              }`}
-              onClick={() => setActiveTab("categories")}
-            >
-              Categories
-            </button>
-          </li>
-          <li>
-            <button
-              className={`w-full text-left p-2 ${
-                activeTab === "orders" ? "bg-blue-600" : ""
-              }`}
-              onClick={() => setActiveTab("orders")}
-            >
-              Orders
-            </button>
-          </li>
-          <li>
-            <button
-              className={`w-full text-left p-2 ${
-                activeTab === "customers" ? "bg-blue-600" : ""
-              }`}
-              onClick={() => setActiveTab("customers")}
-            >
-              Customers
-            </button>
-          </li>
-          <li>
-            <button
-              className={`w-full text-left p-2 ${
-                activeTab === "blogs" ? "bg-blue-600" : ""
-              }`}
-              onClick={() => setActiveTab("blogs")}
-            >
-              Blogs
+              My Properties
             </button>
           </li>
         </ul>
@@ -103,10 +57,6 @@ const AdminDashboard = () => {
 
         {/* Dynamically Render Content based on Active Tab */}
         {activeTab === "properties" && <PropertyTable />}
-        {activeTab === "categories" && <CategoriesTable />}
-        {activeTab === "orders" && <OrdersTable />}
-        {activeTab === "customers" && <CustomersTable />}
-        {activeTab === "blogs" && <BlogsTable />}
       </div>
     </div>
   );

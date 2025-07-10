@@ -87,3 +87,16 @@
   cursor: pointer;
   font-size: 12px;
 }
+.removeButton {
+  margin-top: 4px;
+  background-color: #e00;
+  color: white;
+  border: none;
+  padding: 2px 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+.removeButton:hover {
+  background-color: #c00;
+}
