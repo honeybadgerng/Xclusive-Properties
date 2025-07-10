@@ -267,7 +267,7 @@ export default function AddPropertyPage() {
 
       if (res.ok) {
         alert("Property added!");
-        router.push("/admin");
+        router.push("/agentdashboard/properties");
       } else {
         const error = await res.json();
         console.error("Upload failed:", error);
@@ -558,11 +558,16 @@ export default function AddPropertyPage() {
             onChange={(e) => {
               if (e.target.files) {
                 const files = Array.from(e.target.files);
-                if (files.length > 20) {
-                  alert("You can only upload up to 20 images.");
-                  return;
-                }
-                setImages(files);
+                setImages((prev) => {
+                  const total = prev.length + files.length;
+                  if (total > 20) {
+                    alert(
+                      `You can only upload up to 20 images. You already have ${prev.length}.`
+                    );
+                    return prev;
+                  }
+                  return [...prev, ...files];
+                });
               }
             }}
           />
@@ -610,6 +615,17 @@ export default function AddPropertyPage() {
                     ↓
                   </button>
                 )}
+                <button
+                  type="button"
+                  className={styles.removeButton}
+                  onClick={() => {
+                    const updated = [...images];
+                    updated.splice(index, 1);
+                    setImages(updated);
+                  }}
+                >
+                  ✖ Remove
+                </button>
               </div>
             ))}
           </div>
