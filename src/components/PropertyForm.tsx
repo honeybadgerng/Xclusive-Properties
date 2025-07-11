@@ -6,7 +6,11 @@ import styles from "@/app/agentdashboard/add-property/AddPropertyPage.module.css
 interface PropertyFormProps {
   mode: "add" | "edit";
   initialData?: any;
-  onSubmit: (data: any, images: File[]) => Promise<void>;
+  onSubmit: (
+    data: any,
+    images: File[],
+    existingImages: string[]
+  ) => Promise<void>;
 }
 
 export default function PropertyForm({
@@ -51,6 +55,9 @@ export default function PropertyForm({
   const [images, setImages] = useState<File[]>([]);
   const [facilities, setFacilities] = useState<string[]>(
     initialData?.facilities || []
+  );
+  const [existingImages, setExistingImages] = useState<string[]>(
+    initialData?.images || []
   );
 
   const statesInNigeria = [
@@ -266,7 +273,7 @@ export default function PropertyForm({
       facilities,
     };
 
-    await onSubmit(property, images);
+    await onSubmit(property, images, existingImages);
   };
 
   return (
@@ -637,12 +644,133 @@ export default function PropertyForm({
           </div>
         ))}
       </div>
+      {/* Preview & reorder (existing + new) */}
+      <div className={styles.previewContainer}>
+        {/* Existing Images (URLs) */}
+        {existingImages.map((url, index) => (
+          <div key={`existing-${index}`} className={styles.previewItem}>
+            <img
+              src={url}
+              alt={`existing-${index}`}
+              className={styles.previewImage}
+            />
+
+            {/* Move Up */}
+            {index > 0 && (
+              <button
+                type="button"
+                className={styles.moveButton}
+                onClick={() => {
+                  const updated = [...existingImages];
+                  [updated[index - 1], updated[index]] = [
+                    updated[index],
+                    updated[index - 1],
+                  ];
+                  setExistingImages(updated);
+                }}
+              >
+                ↑
+              </button>
+            )}
+
+            {/* Move Down */}
+            {index < existingImages.length - 1 && (
+              <button
+                type="button"
+                className={styles.moveButton}
+                onClick={() => {
+                  const updated = [...existingImages];
+                  [updated[index], updated[index + 1]] = [
+                    updated[index + 1],
+                    updated[index],
+                  ];
+                  setExistingImages(updated);
+                }}
+              >
+                ↓
+              </button>
+            )}
+
+            {/* Remove */}
+            <button
+              type="button"
+              className={styles.removeButton}
+              onClick={() => {
+                setExistingImages((prev) => prev.filter((_, i) => i !== index));
+              }}
+            >
+              ✖ Remove
+            </button>
+          </div>
+        ))}
+
+        {/* Newly Uploaded Images (Files) */}
+        {images.map((file, index) => (
+          <div key={`new-${index}`} className={styles.previewItem}>
+            <img
+              src={URL.createObjectURL(file)}
+              alt={`new-${index}`}
+              className={styles.previewImage}
+            />
+
+            {/* Move Up */}
+            {index > 0 && (
+              <button
+                type="button"
+                className={styles.moveButton}
+                onClick={() => {
+                  const updated = [...images];
+                  [updated[index - 1], updated[index]] = [
+                    updated[index],
+                    updated[index - 1],
+                  ];
+                  setImages(updated);
+                }}
+              >
+                ↑
+              </button>
+            )}
+
+            {/* Move Down */}
+            {index < images.length - 1 && (
+              <button
+                type="button"
+                className={styles.moveButton}
+                onClick={() => {
+                  const updated = [...images];
+                  [updated[index], updated[index + 1]] = [
+                    updated[index + 1],
+                    updated[index],
+                  ];
+                  setImages(updated);
+                }}
+              >
+                ↓
+              </button>
+            )}
+
+            {/* Remove */}
+            <button
+              type="button"
+              className={styles.removeButton}
+              onClick={() => {
+                const updated = [...images];
+                updated.splice(index, 1);
+                setImages(updated);
+              }}
+            >
+              ✖ Remove
+            </button>
+          </div>
+        ))}
+      </div>
+      <br />
 
       {/* Other Fields */}
       {/* Add rest of fields here following same pattern */}
 
       <button type="submit" className={styles.submitButton}>
-        Add Property
+        {mode === "edit" ? "Update Property" : "Add Property"}
       </button>
     </form>
   );

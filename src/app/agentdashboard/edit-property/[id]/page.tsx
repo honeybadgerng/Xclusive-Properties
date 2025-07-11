@@ -33,12 +33,19 @@ export default function EditPropertyPage() {
     fetchProperty();
   }, [id]);
 
-  const handleUpdate = async (formData: any, images: File[]) => {
+  const handleUpdate = async (
+    formData: any,
+    images: File[],
+    existingImages: string[]
+  ) => {
     try {
       const body = new FormData();
-      console.log(formData);
-      console.log(JSON.stringify(formData));
-      body.append("data", JSON.stringify(formData));
+      const payload = {
+        ...formData,
+        existingImages, // send only retained image URLs
+      };
+
+      body.append("data", JSON.stringify(payload));
       images.forEach((img) => body.append("images", img));
 
       const token = localStorage.getItem("token");
