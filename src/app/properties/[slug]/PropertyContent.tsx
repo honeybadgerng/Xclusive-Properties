@@ -44,6 +44,8 @@ interface Property {
     phone: string;
     email: string;
     image: string;
+    whatsapp?: string;
+    company?: string;
   };
 }
 
@@ -230,7 +232,9 @@ export default function PropertyContent({ property }: { property: Property }) {
             <div className="bg-card border border-border rounded-lg p-6 mb-6">
               <h3 className="text-lg font-semibold mb-2">Book an Inspection</h3>
               <a
-                href={`https://wa.me/2348059522376?text=${encodeURIComponent(
+                href={`https://wa.me/${
+                  property.agent?.whatsapp || "2348059522376"
+                }?text=${encodeURIComponent(
                   `Hello, I would like to book an inspection for this property: https://properties.rjbworld.org/properties/${property.slug}`
                 )}`}
                 target="_blank"
@@ -241,10 +245,22 @@ export default function PropertyContent({ property }: { property: Property }) {
                   Book Now
                 </Button>
               </a>
-              <div className="text-center mt-4 text-sm text-muted-foreground">
+              <a href={`tel:${property.agent?.phone || "2340000000000"}`}>
+                <Button className="w-full bg-secondary text-primary mb-2">
+                  <Phone className="mr-2 h-4 w-4" />
+                  Call Now
+                </Button>
+              </a>
+              {/* <div className="text-center mt-4 text-sm text-muted-foreground">
                 <Info className="h-4 w-4 inline mr-1" />
                 No payment required
-              </div>
+              </div> */}
+
+              {property.agent?.company && (
+                <p className="text-xs text-muted-foreground">
+                  {property.agent.company}
+                </p>
+              )}
             </div>
 
             {property.agent && (
