@@ -53,9 +53,11 @@ const Navbar: React.FC = () => {
     },
     {
       name: "Booking",
-      path: "/booking",
+      path: "https://docs.google.com/forms/d/e/1FAIpQLSeN_MyQeHltgGtdm7JYZE0vITvway604pK_KQsLM6VZWQGaxA/viewform?usp=sf_link",
+      external: true,
       icon: <Clock className="mr-2 h-4 w-4" />,
     },
+
     {
       name: "Blog",
       path: "/blog",
@@ -82,8 +84,19 @@ const Navbar: React.FC = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            {navLinks.map((link) => (
+          {navLinks.map((link) =>
+            link.external ? (
+              <a
+                key={link.name}
+                href={link.path}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center text-sm font-medium hover:text-secondary transition-colors"
+              >
+                {link.icon}
+                {link.name}
+              </a>
+            ) : (
               <Link
                 key={link.name}
                 href={link.path}
@@ -92,8 +105,8 @@ const Navbar: React.FC = () => {
                 {link.icon}
                 {link.name}
               </Link>
-            ))}
-          </div>
+            )
+          )}
 
           {/* Actions */}
           <div className="hidden md:flex items-center space-x-4">
@@ -163,17 +176,32 @@ const Navbar: React.FC = () => {
       {isOpen && (
         <div className="md:hidden absolute w-full bg-background border-b border-border animate-fade-in">
           <div className="container mx-auto px-4 py-3 space-y-1">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                href={link.path}
-                className="flex items-center py-2 px-3 rounded-md hover:bg-muted"
-                onClick={() => setIsOpen(false)}
-              >
-                {link.icon}
-                {link.name}
-              </Link>
-            ))}
+            {navLinks.map((link) =>
+              link.external ? (
+                <a
+                  key={link.name}
+                  href={link.path}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center py-2 px-3 rounded-md hover:bg-muted"
+                  onClick={() => setIsOpen(false)}
+                >
+                  {link.icon}
+                  {link.name}
+                </a>
+              ) : (
+                <Link
+                  key={link.name}
+                  href={link.path}
+                  className="flex items-center py-2 px-3 rounded-md hover:bg-muted"
+                  onClick={() => setIsOpen(false)}
+                >
+                  {link.icon}
+                  {link.name}
+                </Link>
+              )
+            )}
+
             <div className="pt-2 pb-3">
               {isAuthenticated ? (
                 <Button
