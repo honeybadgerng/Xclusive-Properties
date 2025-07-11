@@ -6,7 +6,11 @@ import styles from "@/app/agentdashboard/add-property/AddPropertyPage.module.css
 interface PropertyFormProps {
   mode: "add" | "edit";
   initialData?: any;
-  onSubmit: (data: any, images: File[]) => Promise<void>;
+  onSubmit: (
+    data: any,
+    images: File[],
+    existingImages: string[]
+  ) => Promise<void>;
 }
 
 export default function PropertyForm({
@@ -51,6 +55,9 @@ export default function PropertyForm({
   const [images, setImages] = useState<File[]>([]);
   const [facilities, setFacilities] = useState<string[]>(
     initialData?.facilities || []
+  );
+  const [existingImages, setExistingImages] = useState<string[]>(
+    initialData?.images || []
   );
 
   const statesInNigeria = [
@@ -266,7 +273,7 @@ export default function PropertyForm({
       facilities,
     };
 
-    await onSubmit(property, images);
+    await onSubmit(property, images, existingImages);
   };
 
   return (
@@ -637,12 +644,44 @@ export default function PropertyForm({
           </div>
         ))}
       </div>
+      <div>
+        {existingImages.map((url, idx) => (
+          <div key={idx} className={styles.previewItem}>
+            <img src={url} className={styles.previewImage} />
+            <button
+              type="button"
+              onClick={() =>
+                setExistingImages((prev) => prev.filter((_, i) => i !== idx))
+              }
+            >
+              Remove
+            </button>
+          </div>
+        ))}
+        {images.map((file, index) => (
+          <div key={index} className={styles.previewItem}>
+            <img
+              src={URL.createObjectURL(file)}
+              alt={`preview-${index}`}
+              className={styles.previewImage}
+            />
+            <button
+              type="button"
+              onClick={() =>
+                setImages((prev) => prev.filter((_, i) => i !== index))
+              }
+            >
+              Remove
+            </button>
+          </div>
+        ))}
+      </div>
 
       {/* Other Fields */}
       {/* Add rest of fields here following same pattern */}
 
       <button type="submit" className={styles.submitButton}>
-        Add Property
+        {mode === "edit" ? "Update Property" : "Add Property"}
       </button>
     </form>
   );
