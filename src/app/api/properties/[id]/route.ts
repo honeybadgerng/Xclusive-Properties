@@ -66,3 +66,29 @@ export async function PUT(
     );
   }
 }
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  await dbConnect();
+
+  try {
+    const deleted = await Property.findByIdAndDelete(params.id);
+    if (!deleted) {
+      return NextResponse.json(
+        { message: "Property not found" },
+        { status: 404 }
+      );
+    }
+    return NextResponse.json(
+      { message: "Deleted successfully" },
+      { status: 200 }
+    );
+  } catch (err) {
+    return NextResponse.json(
+      { error: "Something went wrong" },
+      { status: 500 }
+    );
+  }
+}

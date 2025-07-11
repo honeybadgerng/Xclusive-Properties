@@ -98,6 +98,54 @@ const Table: React.FC<TableProps> = ({
           ))}
         </tbody>
       </table>
+      {/* Delete Confirmation Modal */}
+      {deleteItemId && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded shadow-lg max-w-sm w-full">
+            <h2 className="text-lg font-semibold mb-4">Confirm Delete</h2>
+            <p className="mb-4">
+              Are you sure you want to delete this {itemType}?
+            </p>
+            <div className="flex justify-end gap-4">
+              <button
+                onClick={() => setDeleteItemId(null)}
+                className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={async () => {
+                  try {
+                    const token = localStorage.getItem("token");
+                    const res = await fetch(`/api/properties/${deleteItemId}`, {
+                      method: "DELETE",
+                      headers: token
+                        ? { Authorization: `Bearer ${token}` }
+                        : {},
+                    });
+
+                    if (!res.ok) {
+                      const err = await res.json();
+                      alert("Failed to delete: " + err.message);
+                    } else {
+                      setItems((prev) =>
+                        prev.filter((item) => item._id !== deleteItemId)
+                      );
+                      setDeleteItemId(null);
+                    }
+                  } catch (err) {
+                    console.error("Delete error:", err);
+                    alert("Something went wrong.");
+                  }
+                }}
+                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
