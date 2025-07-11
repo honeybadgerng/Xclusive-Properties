@@ -24,6 +24,8 @@ interface Property {
     phone: string;
     email: string;
     image: string;
+    whatsapp?: string;
+    company?: string; // optional for agents
   };
 }
 

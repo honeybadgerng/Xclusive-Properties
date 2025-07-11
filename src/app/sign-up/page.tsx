@@ -9,6 +9,7 @@ const SignUp = () => {
   const [role, setRole] = useState("agent");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [whatsapp, setWhatsapp] = useState("");
   const [companyName, setCompanyName] = useState("");
 
   const router = useRouter();
@@ -22,6 +23,7 @@ const SignUp = () => {
       role,
       name,
       phone,
+      whatsapp,
       ...(role === "agent" && companyName ? { companyName } : {}),
     };
 
@@ -87,6 +89,15 @@ const SignUp = () => {
             type="tel"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
+        <div>
+          <label className="block mb-2">WhatsApp Number</label>
+          <input
+            type="tel"
+            value={whatsapp}
+            onChange={(e) => setWhatsapp(e.target.value)}
             className="w-full p-2 border border-gray-300 rounded"
           />
         </div>

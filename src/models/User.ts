@@ -9,6 +9,7 @@ export interface IUser extends Document {
   phone?: string;
   profileImage?: string;
   companyName?: string; // for agents
+  whatsapp?: string;
   subscription?: {
     plan: string;
     expiresAt: Date;
@@ -34,6 +35,7 @@ const UserSchema: Schema<IUser> = new Schema(
     },
     name: { type: String, required: true },
     phone: String,
+    whatsapp: { type: String },
     profileImage: String,
     companyName: String, // optional for agents
     subscription: {
