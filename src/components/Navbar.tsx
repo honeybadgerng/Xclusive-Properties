@@ -62,9 +62,9 @@ const Navbar: React.FC = () => {
       icon: <FileText className="mr-2 h-4 w-4" />,
     },
     {
-      name: "Contact",
-      path: "/contact",
-      icon: <Phone className="mr-2 h-4 w-4" />,
+      name: "signup",
+      path: "/sign-up",
+      icon: <LogIn className="mr-2 h-4 w-4" />,
     },
   ];
 
