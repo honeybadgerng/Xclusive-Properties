@@ -71,13 +71,45 @@ export async function GET(req: Request) {
     // Search by slug (direct fetch)
     if (params.has("slug")) {
       const slug = params.get("slug");
-      const prop = await Property.findOne({ slug }).lean();
+
+      const prop = (await Property.findOne({ slug })
+        .populate({
+          path: "user",
+          select: "name phone email whatsapp profileImage companyName",
+        })
+        .lean()) as any;
+
       if (!prop)
         return NextResponse.json(
           { error: "Property not found" },
           { status: 404 }
         );
-      return NextResponse.json(prop);
+
+      console.log("📦 Raw property from DB:", JSON.stringify(prop, null, 2));
+
+      const user = prop.user;
+
+      if (!user || typeof user === "string") {
+        console.warn("⚠️ User not populated properly:", user);
+      }
+
+      const agent = {
+        name: user?.name,
+        phone: user?.phone,
+        whatsapp: user?.whatsapp,
+        email: user?.email,
+        image: user?.profileImage,
+        company: user?.companyName,
+      };
+
+      const finalResponse = {
+        ...prop,
+        agent,
+      };
+
+      console.log("🚀 Final response:", JSON.stringify(finalResponse, null, 2));
+
+      return NextResponse.json(finalResponse);
     }
 
     // working perfect Location location logic (search across state, city, street)
