@@ -263,7 +263,7 @@ export default function PropertyContent({ property }: { property: Property }) {
               )}
             </div>
 
-            {property.agent && (
+            {/* {property.agent && (
               <div className="bg-card border border-border rounded-lg p-6">
                 <div className="flex items-center mb-4">
                   <img
@@ -285,7 +285,7 @@ export default function PropertyContent({ property }: { property: Property }) {
                   Email
                 </Button>
               </div>
-            )}
+            )} */}
           </div>
         </div>
       </div>
