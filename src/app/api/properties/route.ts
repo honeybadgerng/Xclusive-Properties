@@ -3,18 +3,6 @@ import Property from "@/models/Property";
 import { NextResponse, NextRequest } from "next/server";
 import jwt from "jsonwebtoken";
 import { getTokenFromRequest } from "@/utils/auth"; // helper to decode JWT
-import mongoose from "mongoose";
-
-const UserSchema = new mongoose.Schema({
-  name: String,
-  phone: String,
-  email: String,
-  whatsapp: String,
-  profileImage: String,
-  companyName: String,
-});
-
-export default mongoose.models.User || mongoose.model("User", UserSchema);
 
 export async function POST(req: Request) {
   try {

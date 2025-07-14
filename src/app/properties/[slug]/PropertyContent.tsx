@@ -18,8 +18,8 @@ import {
   Check,
   ChevronLeft,
   ChevronRight,
-  Info,
-  Mail,
+  // Info,
+  // Mail,
 } from "lucide-react";
 
 interface Property {
