@@ -84,29 +84,31 @@ const Navbar: React.FC = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          {navLinks.map((link) =>
-            link.external ? (
-              <a
-                key={link.name}
-                href={link.path}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center text-sm font-medium hover:text-secondary transition-colors"
-              >
-                {link.icon}
-                {link.name}
-              </a>
-            ) : (
-              <Link
-                key={link.name}
-                href={link.path}
-                className="flex items-center text-sm font-medium hover:text-secondary transition-colors"
-              >
-                {link.icon}
-                {link.name}
-              </Link>
-            )
-          )}
+          <div className="hidden md:flex space-x-6">
+            {navLinks.map((link) =>
+              link.external ? (
+                <a
+                  key={link.name}
+                  href={link.path}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center text-sm font-medium hover:text-secondary transition-colors"
+                >
+                  {link.icon}
+                  {link.name}
+                </a>
+              ) : (
+                <Link
+                  key={link.name}
+                  href={link.path}
+                  className="flex items-center text-sm font-medium hover:text-secondary transition-colors"
+                >
+                  {link.icon}
+                  {link.name}
+                </Link>
+              )
+            )}
+          </div>
 
           {/* Actions */}
           <div className="hidden md:flex items-center space-x-4">
