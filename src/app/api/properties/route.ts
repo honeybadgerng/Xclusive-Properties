@@ -3,6 +3,7 @@ import Property from "@/models/Property";
 import { NextResponse, NextRequest } from "next/server";
 import jwt from "jsonwebtoken";
 import { getTokenFromRequest } from "@/utils/auth"; // helper to decode JWT
+import "@/models/User"; // Just for model registration
 
 export async function POST(req: Request) {
   try {
