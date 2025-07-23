@@ -38,6 +38,12 @@ export default function HomePage() {
 
       <FeaturedProperties />
       <FeatureSection />
+
+      {/* Uncomment when TestimonialSection is ready */}
+      {/* <TestimonialSection /> */}
+
+      {/* Uncomment when CallToAction is ready */}
+
       {/* <TestimonialSection /> */}
       <CallToAction />
       <Footer />
