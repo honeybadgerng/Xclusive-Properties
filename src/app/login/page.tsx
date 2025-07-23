@@ -29,9 +29,10 @@ const Login = () => {
       }
 
       // ✅ Save the token in cookie or localStorage
-      // localStorage.setItem("token", data.token);
-      // document.cookie = `authToken=${data.token}; path=/`;
-      login(data.token);
+      localStorage.setItem("token", data.token);
+      document.cookie = `authToken=${data.token}; path=/`;
+      login(data.token, { email: data.email, _id: data.id });
+
       document.cookie = `authToken=${data.token}; path=/`;
       // ✅ Role-based redirect
       if (data.role === "admin") {
