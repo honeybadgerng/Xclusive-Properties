@@ -2,6 +2,7 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/utils/dbConnect";
 import User from "@/models/User";
+import Plan from "@/models/Plan";
 
 export async function POST(req: Request) {
   const { email, password, role, name, phone, companyName, whatsapp } =
@@ -31,6 +32,19 @@ export async function POST(req: Request) {
 
     console.log("👑 Assigning Role:", userRole); // Debugging log
 
+    // 🎁 Get the free plan
+    const freePlan = await Plan.findOne({ key: "free" });
+    if (!freePlan) {
+      return NextResponse.json(
+        { error: "Free plan not found in database" },
+        { status: 500 }
+      );
+    }
+
+    const now = new Date();
+    const freeDurationMs = 30 * 24 * 60 * 60 * 1000; // 30 days
+    const expiresAt = new Date(now.getTime() + freeDurationMs);
+
     const newUser = new User({
       email,
       password,
@@ -39,6 +53,16 @@ export async function POST(req: Request) {
       phone,
       whatsapp,
       companyName: userRole === "agent" ? companyName : undefined,
+      subscription: {
+        plan: freePlan.key,
+        planName: freePlan.name,
+        listings: freePlan.listings,
+        premiumListings: freePlan.premiumListings,
+        boosts: freePlan.boosts,
+        duration: "monthly",
+        startedAt: now,
+        expiresAt,
+      },
     });
     await newUser.save();
 
@@ -48,7 +72,15 @@ export async function POST(req: Request) {
     return NextResponse.json(
       {
         message: "User registered successfully",
-        user: { email, role: userRole, name, phone, companyName, whatsapp },
+        user: {
+          email,
+          role: userRole,
+          name,
+          phone,
+          companyName,
+          whatsapp,
+          subscription: newUser.subscription,
+        },
       },
       { status: 201 }
     );
