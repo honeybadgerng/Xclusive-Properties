@@ -7,7 +7,7 @@ const PlanSchema = new mongoose.Schema({
   halfYearPrice: { type: Number, required: true },
   fullYearPrice: { type: Number, required: true },
   listings: Number,
-  premium: Number,
+  premiumListings: Number,
   boosts: Number,
 });
 
