@@ -267,7 +267,7 @@ export default function AddPropertyPage() {
 
       if (res.ok) {
         alert("Property added!");
-        router.push("/agentdashboard/properties");
+        router.push("/agentdashboard");
       } else {
         const error = await res.json();
         console.error("Upload failed:", error);
