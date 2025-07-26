@@ -50,7 +50,7 @@ export async function POST(req: Request) {
         companyName: user.companyName,
       },
       secret,
-      { expiresIn: "1h" }
+      { expiresIn: "30d" }
     );
 
     // Return the token and role
