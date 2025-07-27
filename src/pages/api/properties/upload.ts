@@ -66,11 +66,9 @@ export default async function handler(
       const plan = await Plan.findOne({ key: planKey });
 
       if (!plan) {
-        return res
-          .status(500)
-          .json({
-            error: `Plan "${planKey}" not found. Please contact support.`,
-          });
+        return res.status(500).json({
+          error: `Plan "${planKey}" not found. Please contact support.`,
+        });
       }
 
       // enforce limit
@@ -99,6 +97,15 @@ export default async function handler(
 
         const upload = await cloudinary.uploader.upload(file.filepath, {
           folder: "properties",
+          transformation: [
+            {
+              overlay: "Xclusive_properties_lizebt", // must be uploaded to Cloudinary first
+              gravity: "center", // center
+              width: 1000,
+              opacity: 60,
+              effect: "brightness:10",
+            },
+          ],
         });
 
         imageUrls.push(upload.secure_url);
