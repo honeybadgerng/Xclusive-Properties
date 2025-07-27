@@ -50,13 +50,14 @@ export async function POST(req: Request) {
         companyName: user.companyName,
       },
       secret,
-      { expiresIn: "1h" }
+      { expiresIn: "30d" }
     );
 
     // Return the token and role
     return NextResponse.json({
       token,
       role: user.role,
+      email: user.email,
       id: user._id,
       companyName: user.companyName,
     });

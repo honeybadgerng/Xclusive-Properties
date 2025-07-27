@@ -6,6 +6,8 @@ import jwt from "jsonwebtoken";
 
 import dbConnect from "@/utils/dbConnect";
 import Property from "@/models/Property";
+import User from "@/models/User";
+import Plan from "@/models/Plan";
 
 const JWT_SECRET = process.env.JWT_SECRET!;
 
@@ -55,7 +57,29 @@ export default async function handler(
           .status(400)
           .json({ error: "User ID not found in token payload" });
       }
+      const user = await User.findById(decoded.id);
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
 
+      const planKey = user.subscription?.plan?.toLowerCase?.() || "free";
+      const plan = await Plan.findOne({ key: planKey });
+
+      if (!plan) {
+        return res
+          .status(500)
+          .json({
+            error: `Plan "${planKey}" not found. Please contact support.`,
+          });
+      }
+
+      // enforce limit
+      const existingCount = await Property.countDocuments({ user: user._id });
+      if (existingCount >= plan.listings) {
+        return res.status(403).json({
+          error: `You have reached your ${planKey} plan limit of ${plan.listings} listings.`,
+        });
+      }
       // ✅ Parse form data
       const rawData = Array.isArray(fields.data)
         ? fields.data[0]
