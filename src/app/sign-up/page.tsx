@@ -18,7 +18,7 @@ const SignUp = () => {
     e.preventDefault();
 
     const payload = {
-      email,
+      email: email.toLowerCase(), // ⬅️ normalize email
       password,
       role,
       name,
