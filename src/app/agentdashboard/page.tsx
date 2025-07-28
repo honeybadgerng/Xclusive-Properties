@@ -47,6 +47,15 @@ const AdminDashboard = () => {
             </button>
           </li>
         </ul>
+        {/* Upgrade Now Button */}
+        <div className="mt-8">
+          <a
+            href="/agentdashboard/pricing"
+            className="inline-block bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition"
+          >
+            Upgrade Now
+          </a>
+        </div>
       </div>
 
       {/* Content Area */}
