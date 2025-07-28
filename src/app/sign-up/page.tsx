@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Footer from "@/components/Footer";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -50,88 +51,92 @@ const SignUp = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10">
-      <h1 className="text-2xl font-bold mb-4">Sign Up</h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block mb-2">Full Name</label>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-            className="w-full p-2 border border-gray-300 rounded"
-          />
-        </div>
-        <div>
-          <label className="block mb-2">Email</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="w-full p-2 border border-gray-300 rounded"
-          />
-        </div>
-        <div>
-          <label className="block mb-2">Password</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className="w-full p-2 border border-gray-300 rounded"
-          />
-        </div>
-        <div>
-          <label className="block mb-2">Phone Number</label>
-          <input
-            type="tel"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded"
-          />
-        </div>
-        <div>
-          <label className="block mb-2">WhatsApp Number</label>
-          <input
-            type="tel"
-            value={whatsapp}
-            onChange={(e) => setWhatsapp(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded"
-          />
-        </div>
-        <div>
-          <label className="block mb-2">Role</label>
-          <select
-            value={role}
-            onChange={(e) => setRole(e.target.value)}
-            required
-            className="w-full p-2 border border-gray-300 rounded"
-          >
-            <option value="agent">Agent</option>
-            <option value="customer">Customer</option>
-          </select>
-        </div>
-        {role === "agent" && (
+    <>
+      <div className="max-w-md mx-auto mt-10">
+        <h1 className="text-2xl font-bold mb-4">Sign Up</h1>
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block mb-2">Company Name (for agents)</label>
+            <label className="block mb-2">Full Name</label>
             <input
               type="text"
-              value={companyName}
-              onChange={(e) => setCompanyName(e.target.value)}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
               className="w-full p-2 border border-gray-300 rounded"
             />
           </div>
-        )}
-        <button
-          type="submit"
-          className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-        >
-          Sign Up
-        </button>
-      </form>
-    </div>
+          <div>
+            <label className="block mb-2">Email</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="w-full p-2 border border-gray-300 rounded"
+            />
+          </div>
+          <div>
+            <label className="block mb-2">Password</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="w-full p-2 border border-gray-300 rounded"
+            />
+          </div>
+          <div>
+            <label className="block mb-2">Phone Number</label>
+            <input
+              type="tel"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded"
+            />
+          </div>
+          <div>
+            <label className="block mb-2">WhatsApp Number</label>
+            <input
+              type="tel"
+              value={whatsapp}
+              onChange={(e) => setWhatsapp(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded"
+            />
+          </div>
+          <div>
+            <label className="block mb-2">Role</label>
+            <select
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+              required
+              className="w-full p-2 border border-gray-300 rounded"
+            >
+              <option value="agent">Agent</option>
+              <option value="customer">Customer</option>
+            </select>
+          </div>
+          {role === "agent" && (
+            <div>
+              <label className="block mb-2">Company Name (for agents)</label>
+              <input
+                type="text"
+                value={companyName}
+                onChange={(e) => setCompanyName(e.target.value)}
+                className="w-full p-2 border border-gray-300 rounded"
+              />
+            </div>
+          )}
+          <button
+            type="submit"
+            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          >
+            Sign Up
+          </button>
+        </form>
+      </div>
+      <br />
+      <Footer />
+    </>
   );
 };
 
