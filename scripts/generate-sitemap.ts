@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 // const fetch = require("node-fetch"); // Only needed if using ts-node directly and no global fetch
 
-const baseUrl = "https://store.rjbworld.org";
+const baseUrl = "https://properties.rjbworld.org";
 
 const publicStaticPaths = ["", "/about", "/blogs"];
 
@@ -39,9 +39,8 @@ async function getSlugs(url: string): Promise<string[]> {
 
 async function generateSitemap() {
   try {
-    const [productSlugs, blogSlugs] = await Promise.all([
-      getSlugs(`${baseUrl}/api/products`),
-      getSlugs(`${baseUrl}/api/blogs`),
+    const [propertySlugs] = await Promise.all([
+      getSlugs(`${baseUrl}/api/properties`),
     ]);
 
     const staticUrls = publicStaticPaths
@@ -57,23 +56,11 @@ async function generateSitemap() {
       )
       .join("");
 
-    const productUrls = productSlugs
+    const propertyUrls = propertySlugs
       .map(
         (slug) => `
   <url>
-    <loc>${baseUrl}/product/${slug}</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>`
-      )
-      .join("");
-
-    const blogUrls = blogSlugs
-      .map(
-        (slug) => `
-  <url>
-    <loc>${baseUrl}/blogs/${slug}</loc>
+    <loc>${baseUrl}/properties/${slug}</loc>
     <lastmod>${today}</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
@@ -91,8 +78,8 @@ async function generateSitemap() {
   xmlns:video="http://www.google.com/schemas/sitemap-video/1.1"
 >
 ${staticUrls}
-${productUrls}
-${blogUrls}
+${propertyUrls}
+
 </urlset>`;
 
     fs.writeFileSync(

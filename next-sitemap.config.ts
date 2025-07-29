@@ -7,8 +7,8 @@ const config = {
   changefreq: "daily",
   priority: 0.7,
   additionalPaths: async () => {
-    const { productUrls, blogUrls } = await fetchSlugs();
-    return [...productUrls, ...blogUrls];
+    const { propertyUrls } = await fetchSlugs();
+    return [...propertyUrls];
   },
 };
 
