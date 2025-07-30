@@ -1,8 +1,7 @@
 // scripts/fetchSlugs.ts
 import mongoose from "mongoose";
-import Product from "../src/models/Product";
-import Blog from "../src/models/Blog";
 
+import Property from "@/models/Property";
 const connect = async () => {
   if (mongoose.connection.readyState === 0) {
     await mongoose.connect(process.env.MONGODB_URI!);
@@ -12,17 +11,10 @@ const connect = async () => {
 export const fetchSlugs = async () => {
   await connect();
 
-  const products = await Product.find({}, "slug").lean();
-  const blogs = await Blog.find({}, "slug").lean();
-
+  const properties = await Property.find({}, "slug").lean();
   return {
-    productUrls: products.map((p) => ({
-      loc: `/products/${p.slug}`,
-      changefreq: "weekly",
-      priority: 0.8,
-    })),
-    blogUrls: blogs.map((b) => ({
-      loc: `/blogs/${b.slug}`,
+    propertyUrls: properties.map((p) => ({
+      loc: `/properties/${p.slug}`,
       changefreq: "weekly",
       priority: 0.7,
     })),
