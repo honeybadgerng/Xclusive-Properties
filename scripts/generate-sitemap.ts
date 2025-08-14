@@ -39,8 +39,9 @@ async function getSlugs(url: string): Promise<string[]> {
 
 async function generateSitemap() {
   try {
-    const [propertySlugs] = await Promise.all([
+    const [propertySlugs, blogSlugs] = await Promise.all([
       getSlugs(`${baseUrl}/api/properties`),
+      getSlugs(`${baseUrl}/api/blogs`),
     ]);
 
     const staticUrls = publicStaticPaths
@@ -67,6 +68,17 @@ async function generateSitemap() {
   </url>`
       )
       .join("");
+    const blogUrls = blogSlugs
+      .map(
+        (slug) => `
+  <url>
+    <loc>${baseUrl}/blogs/${slug}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>`
+      )
+      .join("");
 
     const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset 
@@ -79,6 +91,7 @@ async function generateSitemap() {
 >
 ${staticUrls}
 ${propertyUrls}
+${blogUrls}
 
 </urlset>`;
 
