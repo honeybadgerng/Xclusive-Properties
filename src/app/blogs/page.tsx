@@ -145,7 +145,7 @@ const BlogsList = () => {
           </Box>
         </>
       ) : (
-        <Typography>No blogs found.</Typography>
+        <Typography>Loading please wait.</Typography>
       )}
     </Box>
   );

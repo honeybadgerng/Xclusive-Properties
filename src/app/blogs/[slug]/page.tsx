@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import dbConnect from "@/utils/dbConnect";
 import Blog from "@/models/Blog"; // Assuming you have a Blog model
 import SingleBlogClient from "@/components/SingleBlogClient"; // Client Component
+import Footer from "@/components/Footer";
 
 // Fetch blog data from the database
 async function fetchBlog(slug: string) {
@@ -56,6 +57,7 @@ export default async function BlogDetails({
   return (
     <div>
       <SingleBlogClient blog={blog} />
+      <Footer />
     </div>
   );
 }
