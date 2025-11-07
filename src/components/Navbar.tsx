@@ -18,6 +18,9 @@ import {
   Phone,
   LogOut,
   LogIn,
+  CircleUser,
+  ChartCandlestick,
+  Newspaper,
 } from "lucide-react";
 
 const Navbar: React.FC = () => {
@@ -45,7 +48,21 @@ const Navbar: React.FC = () => {
   };
 
   const navLinks = [
-    { name: "Home", path: "/", icon: <Home className="mr-2 h-4 w-4" /> },
+    {
+      name: "About Us",
+      path: "/about",
+      icon: <CircleUser className="mr-2 h-4 w-4" />,
+    },
+    {
+      name: "Whitepaper",
+      path: "/whitepaper",
+      icon: <Newspaper className="mr-2 h-4 w-4" />,
+    },
+    {
+      name: "Investment",
+      path: "/investment",
+      icon: <ChartCandlestick className="mr-2 h-4 w-4" />,
+    },
     {
       name: "Properties",
       path: "/properties",
