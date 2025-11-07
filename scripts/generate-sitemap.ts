@@ -4,7 +4,13 @@ const path = require("path");
 
 const baseUrl = "https://properties.rjbworld.org";
 
-const publicStaticPaths = ["", "/about", "/blogs"];
+const publicStaticPaths = [
+  "",
+  "/about",
+  "/blogs",
+  "/investment",
+  "/whitepaper",
+];
 
 const excludedPaths = [
   "/admin/add-blog",
