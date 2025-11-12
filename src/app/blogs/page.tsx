@@ -4,13 +4,22 @@ import { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
-  CardMedia,
-  Typography,
-  Button,
-  Box,
-  Grid,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import {
   Pagination,
-} from "@mui/material";
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+import { Calendar, Clock, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 type Blog = {
@@ -18,137 +27,223 @@ type Blog = {
   title: string;
   slug: string;
   content: string;
-  image?: string; // Assuming each blog has an optional image field
-  createdAt: string; // Assuming the blog has a createdAt field
+  image?: string;
+  author?: string;
+  createdAt: string;
+  category?: string;
 };
 
-const BlogsList = () => {
+const POSTS_PER_PAGE = 6;
+
+export default function BlogsList() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [error, setError] = useState<string | null>(null);
 
-  const blogsPerPage = 10; // Number of blogs per page
-
   useEffect(() => {
-    const fetchBlogs = async () => {
+    async function fetchBlogs() {
       try {
         const res = await fetch("/api/blogs");
         if (!res.ok) throw new Error("Failed to fetch blogs");
         const data = await res.json();
 
-        // Sort blogs in descending order of creation date
-        const sortedBlogs = data.sort(
+        // Sort blogs by newest first
+        const sorted = data.sort(
           (a: Blog, b: Blog) =>
             new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         );
-
-        setBlogs(sortedBlogs);
+        setBlogs(sorted);
       } catch (err: any) {
         setError(err.message);
       }
-    };
+    }
 
     fetchBlogs();
   }, []);
 
-  // Calculate the blogs to display based on pagination
-  const indexOfLastBlog = currentPage * blogsPerPage;
-  const indexOfFirstBlog = indexOfLastBlog - blogsPerPage;
-  const currentBlogs = blogs.slice(indexOfFirstBlog, indexOfLastBlog);
+  if (error)
+    return <div className="text-red-500 text-center mt-10">Error: {error}</div>;
+  if (blogs.length === 0)
+    return <div className="text-center mt-10">Loading, please wait...</div>;
 
-  const handlePageChange = (
-    event: React.ChangeEvent<unknown>,
-    value: number
-  ) => {
-    setCurrentPage(value);
+  const totalPages = Math.ceil(blogs.length / POSTS_PER_PAGE);
+  const startIndex = (currentPage - 1) * POSTS_PER_PAGE;
+  const currentPosts = blogs.slice(startIndex, startIndex + POSTS_PER_PAGE);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  if (error) {
-    return <Typography color="error">Error: {error}</Typography>;
-  }
-
   return (
-    <Box sx={{ maxWidth: 1200, mx: "auto", mt: 6, p: 3 }}>
-      <Typography variant="h4" fontWeight="bold" gutterBottom>
-        Blogs
-      </Typography>
-      {blogs.length > 0 ? (
-        <>
-          <Grid container spacing={4}>
-            {currentBlogs.map((blog) => (
-              <Grid item xs={12} sm={6} md={4} key={blog._id}>
+    <div className="min-h-screen bg-background">
+      {/* Hero */}
+      <section className="py-20 px-4 bg-gradient-to-b from-primary/5 to-background">
+        <div className="container mx-auto max-w-7xl text-center">
+          <h1 className="text-4xl md:text-6xl font-bold mb-6 text-foreground">
+            Insights & Updates
+          </h1>
+          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
+            Stay informed about real estate trends, sustainability, and
+            investment opportunities across Africa.
+          </p>
+        </div>
+      </section>
+
+      {/* Blog List */}
+      <section className="py-16 px-4">
+        <div className="container mx-auto max-w-7xl">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {currentPosts.map((post) => {
+              const author = post.author || "Admin";
+              const category = post.category || "Real Estate";
+              const plainText = post.content.replace(/<[^>]+>/g, "");
+              const excerpt =
+                plainText.length > 150
+                  ? plainText.slice(0, 150) + "..."
+                  : plainText;
+              const readTime = `${Math.ceil(
+                plainText.split(" ").length / 200
+              )} min read`; // rough 200 words per minute
+
+              return (
                 <Card
-                  sx={{
-                    height: "100%",
-                    display: "flex",
-                    flexDirection: "column",
-                  }}
+                  key={post._id}
+                  className="hover:shadow-lg transition-shadow overflow-hidden group"
                 >
-                  {/* Wrap image in a Link */}
-                  <Link href={`/blogs/${blog.slug}`} passHref>
-                    <CardMedia
-                      component="img"
-                      sx={{
-                        height: 200, // Uniform height
-                        objectFit: "cover", // Crop to fit within the dimensions
-                        cursor: "pointer", // Indicate it's clickable
-                      }}
-                      image={blog.image || "https://via.placeholder.com/300"} // Fallback to placeholder if no image is available
-                      alt="Blog image"
+                  <Link
+                    href={`/blogs/${post.slug}`}
+                    className="block relative h-48 overflow-hidden bg-muted"
+                  >
+                    <img
+                      src={post.image || "/placeholder.svg"}
+                      alt={post.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                   </Link>
-                  <CardContent>
-                    {/* Wrap title in a Link */}
-                    <Link href={`/blogs/${blog.slug}`} passHref>
-                      <Typography
-                        gutterBottom
-                        variant="h5"
-                        component="div"
-                        sx={{
-                          cursor: "pointer",
-                          textDecoration: "none", // Remove default link underline
-                          "&:hover": { textDecoration: "underline" },
-                          color: "inherit", // Match current text color
-                        }}
-                      >
-                        {blog.title}
-                      </Typography>
+                  <CardHeader>
+                    <div className="flex items-center gap-4 text-sm text-muted-foreground mb-2">
+                      <Badge variant="secondary">{category}</Badge>
+                      <div className="flex items-center gap-1">
+                        <Calendar className="w-4 h-4" />
+                        {new Date(post.createdAt).toLocaleDateString("en-US", {
+                          month: "short",
+                          day: "numeric",
+                          year: "numeric",
+                        })}
+                      </div>
+                    </div>
+                    <Link href={`/blogs/${post.slug}`}>
+                      <CardTitle className="line-clamp-2 group-hover:text-primary transition-colors cursor-pointer">
+                        {post.title}
+                      </CardTitle>
                     </Link>
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      sx={{ mb: 2 }}
-                    >
-                      {/* Extracting plain text from HTML content */}
-                      {blog.content.replace(/<[^>]+>/g, "").slice(0, 100)}...
-                    </Typography>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      href={`/blogs/${blog.slug}`}
-                      size="small"
-                    >
-                      Read More
-                    </Button>
+                    <CardDescription className="line-clamp-3">
+                      {excerpt}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex items-center justify-between text-sm text-muted-foreground">
+                      <div className="flex items-center gap-3">
+                        <Clock className="w-4 h-4" />
+                        <span>{readTime}</span>
+                        <span>•</span>
+                        <span>{author}</span>
+                      </div>
+                      <Link href={`/blogs/${post.slug}`}>
+                        <Button variant="ghost" size="sm" className="group/btn">
+                          Read More
+                          <ArrowRight className="w-4 h-4 ml-2 group-hover/btn:translate-x-1 transition-transform" />
+                        </Button>
+                      </Link>
+                    </div>
                   </CardContent>
                 </Card>
-              </Grid>
-            ))}
-          </Grid>
-          <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
-            <Pagination
-              count={Math.ceil(blogs.length / blogsPerPage)}
-              page={currentPage}
-              onChange={handlePageChange}
-              color="primary"
-            />
-          </Box>
-        </>
-      ) : (
-        <Typography>Loading please wait.</Typography>
-      )}
-    </Box>
-  );
-};
+              );
+            })}
+          </div>
 
-export default BlogsList;
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="mt-12">
+              <Pagination>
+                <PaginationContent className="flex-wrap justify-center gap-2">
+                  <PaginationItem>
+                    <PaginationPrevious
+                      onClick={() =>
+                        handlePageChange(Math.max(1, currentPage - 1))
+                      }
+                      className={
+                        currentPage === 1
+                          ? "pointer-events-none opacity-50"
+                          : "cursor-pointer"
+                      }
+                    />
+                  </PaginationItem>
+
+                  {/* Mobile view */}
+                  <div className="flex md:hidden items-center gap-2">
+                    <PaginationItem>
+                      <PaginationLink isActive>{currentPage}</PaginationLink>
+                    </PaginationItem>
+                    <span className="text-muted-foreground">
+                      of {totalPages}
+                    </span>
+                  </div>
+
+                  {/* Desktop view */}
+                  <div className="hidden md:flex items-center gap-1">
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                      (page) => {
+                        if (
+                          page === 1 ||
+                          page === totalPages ||
+                          (page >= currentPage - 1 && page <= currentPage + 1)
+                        ) {
+                          return (
+                            <PaginationItem key={page}>
+                              <PaginationLink
+                                onClick={() => handlePageChange(page)}
+                                isActive={currentPage === page}
+                                className="cursor-pointer"
+                              >
+                                {page}
+                              </PaginationLink>
+                            </PaginationItem>
+                          );
+                        } else if (
+                          page === currentPage - 2 ||
+                          page === currentPage + 2
+                        ) {
+                          return (
+                            <PaginationItem key={page}>
+                              <PaginationEllipsis />
+                            </PaginationItem>
+                          );
+                        }
+                        return null;
+                      }
+                    )}
+                  </div>
+
+                  <PaginationItem>
+                    <PaginationNext
+                      onClick={() =>
+                        handlePageChange(Math.min(totalPages, currentPage + 1))
+                      }
+                      className={
+                        currentPage === totalPages
+                          ? "pointer-events-none opacity-50"
+                          : "cursor-pointer"
+                      }
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            </div>
+          )}
+        </div>
+      </section>
+    </div>
+  );
+}
