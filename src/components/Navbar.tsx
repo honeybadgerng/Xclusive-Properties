@@ -77,7 +77,7 @@ const Navbar: React.FC = () => {
     },
 
     {
-      name: "Blog",
+      name: "Blogs",
       path: "/blogs",
       icon: <FileText className="mr-2 h-4 w-4" />,
     },
