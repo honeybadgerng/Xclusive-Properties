@@ -21,6 +21,7 @@ import {
   CircleUser,
   ChartCandlestick,
   Newspaper,
+  Hourglass,
 } from "lucide-react";
 
 const Navbar: React.FC = () => {
@@ -76,9 +77,14 @@ const Navbar: React.FC = () => {
     },
 
     {
-      name: "Blog",
+      name: "Blogs",
       path: "/blogs",
       icon: <FileText className="mr-2 h-4 w-4" />,
+    },
+    {
+      name: "Join waiting list",
+      path: "/waiting-list",
+      icon: <Hourglass className="mr-2 h-4 w-4" />,
     },
     {
       name: "signup",
