@@ -10,6 +10,7 @@ const publicStaticPaths = [
   "/blogs",
   "/investment",
   "/whitepaper",
+  "/waiting-list",
 ];
 
 const excludedPaths = [
