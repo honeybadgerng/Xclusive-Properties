@@ -92,24 +92,24 @@ const About = () => {
     <Layout>
       <Head>
         <title>
-          About Xclusive Realtors | Blockchain Real Estate & Smart City
+          RJB Xclusive Properties | Blockchain Real Estate & Smart City
           Innovation in Africa
         </title>
         <meta
           name="description"
-          content="Learn about Xclusive Realtors, pioneers in blockchain-powered real estate and IoT-based smart city infrastructure. We make African property investment accessible, secure, and transparent for investors worldwide."
+          content="Learn about RJB Xclusive Properties, pioneers in blockchain-powered real estate and IoT-based smart city infrastructure. We make African property investment accessible, secure, and transparent for investors worldwide."
         />
         <meta
           name="keywords"
-          content="about Xclusive Realtors, tokenized real estate Africa, blockchain property investment, smart city infrastructure, IoT real estate Nigeria, real estate tokenization, fractional ownership Africa"
+          content="RJB Xclusive Properties,RJB Xclusive,Xclusive Properties, tokenized real estate Africa, blockchain property investment, smart city infrastructure, IoT real estate Nigeria, real estate tokenization, fractional ownership Africa"
         />
         <meta
           property="og:title"
-          content="About Xclusive Realtors | Africa’s Blockchain Real Estate Platform"
+          content="About RJB Xclusive Properties | Africa’s Blockchain Real Estate Platform"
         />
         <meta
           property="og:description"
-          content="Xclusive Realtors is revolutionizing African real estate with blockchain tokenization and IoT smart property management. Learn more about our mission, leadership, and innovation."
+          content="RJB Xclusive Properties is revolutionizing African real estate with blockchain tokenization and IoT smart property management. Learn more about our mission, leadership, and innovation."
         />
         <meta property="og:url" content="https://xclusiverealtors.com/about" />
         <meta property="og:type" content="website" />
@@ -124,26 +124,33 @@ const About = () => {
           {`{
       "@context": "https://schema.org",
       "@type": "Organization",
-      "name": "Xclusive Realtors",
+      "name": "RJB Xclusive Properties",
       "url": "https://xclusiverealtors.com",
       "logo": "https://xclusiverealtors.com/images/logo.png",
-      "description": "Xclusive Realtors leverages blockchain and IoT to create transparent, accessible property investment opportunities across Africa.",
+      "description": "RJB Xclusive Properties leverages blockchain and IoT to create transparent, accessible property investment opportunities across Africa.",
       "foundingDate": "2023",
       "founders": [
         {
-          "@type": "Person",
-          "name": "Chief Executive Officer"
+          "@type": "Organization",
+          "name": "RJB Xclusive Properties Founding Team"
+        }
+      ],
+      "founders": [
+        {
+          "type": "WebSite",
+          "name": "RJB Xclusive Properties",
+          "url": "https://properties.rjbworld.org/" 
         }
       ],
       "sameAs": [
-        "https://www.linkedin.com/company/xclusiverealtors",
-        "https://twitter.com/xclusiverealtors",
-        "https://instagram.com/xclusiverealtors"
+        "https://www.linkedin.com/company/xclusiveproperties",
+        "https://twitter.com/xclusiveprops",
+        "https://instagram.com/xclusiveproperties"
       ],
       "contactPoint": {
         "@type": "ContactPoint",
         "contactType": "customer support",
-        "email": "support@xclusiverealtors.com"
+        "email": "support@xclusiveproperties.com"
       }
     }`}
         </script>
@@ -155,8 +162,8 @@ const About = () => {
           <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-4xl mx-auto text-center animate-fade-in">
               <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent">
-                About Xclusive Realtors – Blockchain Real Estate & Smart City
-                Innovation
+                About RJB Xclusive Properties – Blockchain Real Estate & Smart
+                City Innovation
               </h1>
               <p className="text-xl md:text-2xl text-muted-foreground mb-8">
                 Revolutionizing African Real Estate Through Blockchain & IoT
@@ -182,27 +189,49 @@ const About = () => {
                 Our Story and Mission
               </h2>
               <div className="prose prose-lg max-w-none text-muted-foreground space-y-6">
+                {" "}
                 <p className="text-lg leading-relaxed">
-                  Xclusive Realtors was founded with a bold vision: to make real
-                  estate investment in Africa accessible, transparent, and
-                  borderless. We recognized that property investment across the
-                  continent has been plagued by high costs, illiquidity,
-                  currency restrictions, and opaque systems that exclude
-                  millions of potential investors.
-                </p>
+                  {" "}
+                  RJB Xclusive Properties is a real estate technology company
+                  focused on redefining how people invest in property. RJB
+                  Xclusive was created to remove the high barriers, lack of
+                  trust, and limited access that define traditional real estate
+                  investment in Nigeria and across Africa. From the start, RJB
+                  Xclusive Properties has been built to serve both local and
+                  global investors who want secure, transparent, and flexible
+                  access to real assets.{" "}
+                </p>{" "}
                 <p className="text-lg leading-relaxed">
-                  By combining blockchain technology with IoT-powered smart city
-                  infrastructure, we're building the future of African real
-                  estate. Our platform allows anyone, anywhere in the world, to
-                  invest in verified Nigerian properties using cryptocurrency,
-                  with ownership recorded transparently on the blockchain.
-                </p>
+                  {" "}
+                  At the core of RJB Xclusive Properties is blockchain powered
+                  real estate tokenization. Properties on the platform are
+                  verified, digitized, and divided into investment units
+                  recorded on blockchain. This structure allows investors to
+                  start with small amounts, participate from anywhere in the
+                  world, and hold provable ownership records that cannot be
+                  altered or duplicated. By using blockchain, RJB Xclusive
+                  eliminates common problems such as fake property documents,
+                  double allocation, and manual record keeping.{" "}
+                </p>{" "}
                 <p className="text-lg leading-relaxed">
-                  We're not just a real estate platform—we're building the
-                  foundation for Africa's first truly smart cities, where
-                  property management is automated, transparent, and efficient
-                  through IoT technology.
-                </p>
+                  {" "}
+                  RJB Xclusive also integrates smart property and IoT driven
+                  infrastructure to support efficient property management. Rent
+                  collection, access control, service payments, and operational
+                  monitoring are designed to run through automated systems. This
+                  creates a more reliable experience for investors, property
+                  owners, and tenants while reducing operational waste and human
+                  error.{" "}
+                </p>{" "}
+                <p className="text-lg leading-relaxed">
+                  {" "}
+                  The long term vision of RJB Xclusive Properties is to power
+                  smart, investment ready cities starting in Africa and
+                  expanding globally. By combining real estate, blockchain, and
+                  smart infrastructure, RJB Xclusive is building a trusted
+                  foundation for modern property ownership and digital real
+                  estate investment.{" "}
+                </p>{" "}
               </div>
 
               {/* Milestones */}
