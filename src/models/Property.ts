@@ -39,6 +39,14 @@ export interface IProperty extends Document {
   description: string;
   facilities: string[];
   images: string[];
+  metaTitle?: string;
+  metaDescription?: string;
+  keywords?: string[];
+  altTexts?: string[];
+  faqs?: {
+    question: string;
+    answer: string;
+  }[];
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -115,6 +123,17 @@ const PropertySchema: Schema = new Schema(
       validate: [imageLimit, "{PATH} exceeds the limit of 6"],
       required: true,
     },
+    // SEO fields
+    metaTitle: { type: String },
+    metaDescription: { type: String },
+    keywords: { type: [String] },
+    altTexts: { type: [String] },
+    faqs: [
+      {
+        question: { type: String, required: true },
+        answer: { type: String, required: true },
+      },
+    ],
   },
   { timestamps: true }
 );
