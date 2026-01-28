@@ -1,14 +1,7 @@
 "use client";
 
 import React from "react";
-import {
-  Shield,
-  Clock,
-  Search,
-  PiggyBank,
-  MapPin,
-  CreditCard,
-} from "lucide-react";
+import { ShieldCheck, Clock, Search, Coins, MapPin, Lock } from "lucide-react";
 
 interface Feature {
   icon: JSX.Element;
@@ -18,40 +11,40 @@ interface Feature {
 
 const features: Feature[] = [
   {
-    icon: <Shield className="h-10 w-10 text-secondary" />,
-    title: "Verified Properties",
+    icon: <ShieldCheck className="h-10 w-10 text-secondary" />,
+    title: "Blockchain Verified Properties",
     description:
-      "All our properties are thoroughly inspected and verified to ensure quality standards.",
+      "Each listing includes on chain verification to confirm ownership, history, and authenticity.",
   },
   {
     icon: <Clock className="h-10 w-10 text-secondary" />,
-    title: "Quick Processing",
+    title: "Faster Deal Closure",
     description:
-      "Fast and efficient booking process with minimal paperwork and quick approvals.",
+      "Smart workflows reduce paperwork and speed up buying, renting, and investment processes.",
   },
   {
     icon: <Search className="h-10 w-10 text-secondary" />,
-    title: "Advanced Search",
+    title: "Transparent Property Data",
     description:
-      "Find exactly what you need with our advanced property search and filtering options.",
+      "Access pricing, ownership status, and property details with full visibility before commitment.",
   },
   {
-    icon: <PiggyBank className="h-10 w-10 text-secondary" />,
-    title: "Flexible Payments",
+    icon: <Coins className="h-10 w-10 text-secondary" />,
+    title: "Crypto and Naira Payments",
     description:
-      "Multiple payment options including Naira, Cryptocurrency, and installment plans.",
+      "Pay using supported cryptocurrencies or local currency with clear conversion and records.",
   },
   {
     icon: <MapPin className="h-10 w-10 text-secondary" />,
-    title: "Prime Locations",
+    title: "Verified Nigerian Locations",
     description:
-      "Exclusive properties in the most sought-after locations across Nigeria.",
+      "Properties sourced from trusted developers in Lagos, Abuja, and other key cities.",
   },
   {
-    icon: <CreditCard className="h-10 w-10 text-secondary" />,
-    title: "Secure Transactions",
+    icon: <Lock className="h-10 w-10 text-secondary" />,
+    title: "Escrow Protected Transactions",
     description:
-      "Safe and secure payment processing with multiple payment options.",
+      "Funds remain secured until transaction conditions are met and ownership updates recorded.",
   },
 ];
 
@@ -61,11 +54,11 @@ const FeaturedSection: React.FC = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Why Choose Xclusive Properties
+            Why Xclusive Properties Works
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            We provide a premium real estate experience with exclusive features
-            and benefits.
+            A real estate platform built for trust, speed, and digital ownership
+            in Nigeria.
           </p>
         </div>
 
