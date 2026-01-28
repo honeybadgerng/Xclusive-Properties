@@ -20,12 +20,13 @@ const HeroSection: React.FC = () => {
       <div className="container mx-auto px-4 py-20 md:py-32 relative z-10">
         <div className="max-w-3xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight animate-fade-in">
-            Find Your Perfect <span className="text-secondary">Home</span> in
-            Nigeria
+            Own Property in Nigeria.
+            <span className="text-secondary"> Backed by Crypto</span>
           </h1>
+
           <p className="text-lg md:text-xl opacity-90 mb-10 animate-slide-in">
-            Exclusive properties for sale, rent and short-lets across Nigeria's
-            prime locations.
+            Buy, rent, or invest in verified Nigerian properties with blockchain
+            records and secure digital payments.
           </p>
 
           <div
@@ -38,9 +39,9 @@ const HeroSection: React.FC = () => {
             </Button>
             <Button
               variant="outline"
-              className="border-white hover:bg-white/10 py-6"
+              className="border-white text-white bg-transparent hover:bg-white/10 py-6"
             >
-              <MapPin className="mr-2 h-5 w-5" />
+              <MapPin className="mr-2 h-5 w-5 text-white" />
               View Locations
             </Button>
           </div>
