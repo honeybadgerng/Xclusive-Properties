@@ -6,7 +6,8 @@ import {
   Instagram,
   Mail,
   Phone,
-  MapPin,
+  ShieldCheck,
+  Coins,
 } from "lucide-react";
 
 const Footer: React.FC = () => {
@@ -25,9 +26,21 @@ const Footer: React.FC = () => {
               />
             </Link>
             <p className="mb-4 text-sm opacity-80">
-              Providing premium real estate solutions across Nigeria. Your
-              journey to finding the perfect property starts here.
+              A crypto enabled real estate platform for buying, renting, and
+              investing in verified Nigerian properties.
             </p>
+
+            {/* Trust badges */}
+            <div className="flex flex-wrap gap-3 mb-4 text-xs">
+              <div className="flex items-center gap-1 bg-white/10 px-2 py-1 rounded-full">
+                <ShieldCheck className="h-3 w-3 text-secondary" />
+                Blockchain verified
+              </div>
+              <div className="flex items-center gap-1 bg-white/10 px-2 py-1 rounded-full">
+                <Coins className="h-3 w-3 text-secondary" />
+                Crypto payments supported
+              </div>
+            </div>
             <div className="flex space-x-4">
               <a
                 href="#"
